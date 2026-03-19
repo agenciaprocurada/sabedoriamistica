@@ -1,9 +1,80 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { MysticLoader } from "@/components/ui";
 import { createClient } from "@/lib/supabase/client";
+
+const LOADING_MESSAGES = [
+  "Consultando o dicionário de sonhos...",
+  "Identificando os símbolos do seu sonho...",
+  "Analisando emoções e padrões ocultos...",
+  "Conectando os elementos do sonho...",
+  "Preparando sua interpretação personalizada...",
+];
+
+function AnalysisLoader() {
+  const [msgIndex, setMsgIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [fade, setFade] = useState(true);
+
+  useEffect(() => {
+    // Barra de progresso avança suavemente até ~90% e para
+    const progressTimer = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 90) return p;
+        return p + 1.2;
+      });
+    }, 80);
+
+    return () => clearInterval(progressTimer);
+  }, []);
+
+  useEffect(() => {
+    const msgTimer = setInterval(() => {
+      setFade(false);
+      setTimeout(() => {
+        setMsgIndex((i) => (i + 1) % LOADING_MESSAGES.length);
+        setFade(true);
+      }, 300);
+    }, 2200);
+
+    return () => clearInterval(msgTimer);
+  }, []);
+
+  return (
+    <div className="w-full max-w-sm mx-auto flex flex-col items-center gap-8 py-4 animate-fadeIn">
+      <MysticLoader size={64} text="" />
+
+      <div className="w-full space-y-3">
+        {/* Barra de progresso */}
+        <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-gold/60 to-gold rounded-full transition-all duration-150 ease-out"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        {/* Mensagem rotativa */}
+        <p
+          className="font-body text-sm text-center text-text-secondary transition-opacity duration-300"
+          style={{ opacity: fade ? 1 : 0 }}
+        >
+          {LOADING_MESSAGES[msgIndex]}
+        </p>
+      </div>
+
+      <div className="text-center space-y-1">
+        <p className="font-display text-xl text-gold">
+          Seu sonho está sendo analisado
+        </p>
+        <p className="font-body text-xs text-text-muted">
+          Isso leva apenas alguns segundos
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export function HeroForm() {
   const router = useRouter();
@@ -21,27 +92,15 @@ export function HeroForm() {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (user) {
-      // Já logado — vai direto para a análise
       router.push("/sonhos/analisar");
     } else {
-      // Não logado — mostra loading e redireciona para login
       await new Promise((r) => setTimeout(r, 2000));
       router.push("/login?redirect=/sonhos/analisar");
     }
   }
 
   if (loading) {
-    return (
-      <div className="w-full max-w-2xl mx-auto flex flex-col items-center gap-6 py-8 animate-fade-in">
-        <MysticLoader size={72} text="" />
-        <p className="font-display text-2xl text-gold text-center">
-          Seu sonho está sendo analisado
-        </p>
-        <p className="font-body text-text-secondary text-center max-w-sm">
-          Estamos preparando a interpretação profunda. Em instantes você receberá sua análise personalizada.
-        </p>
-      </div>
-    );
+    return <AnalysisLoader />;
   }
 
   return (
