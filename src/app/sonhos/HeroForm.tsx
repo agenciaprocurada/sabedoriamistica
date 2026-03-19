@@ -49,12 +49,7 @@ export function HeroForm() {
       onSubmit={handleSubmit}
       className="w-full max-w-xl mx-auto relative"
     >
-      {/* Glow radial por trás do card */}
-      <div
-        className="absolute -inset-6 -z-10 blur-3xl opacity-50 rounded-3xl pointer-events-none"
-        style={{ background: "radial-gradient(ellipse at 60% 40%, #1E2E9A 0%, #141C52 50%, transparent 75%)" }}
-      />
-      <div className="bg-mystic-card border border-gold-subtle rounded-2xl p-6 space-y-5">
+      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 space-y-5">
         {/* Card header */}
         <div className="space-y-1">
           <div className="flex items-center gap-2">
@@ -74,7 +69,7 @@ export function HeroForm() {
           onChange={(e) => setDream(e.target.value)}
           placeholder="Escreva tudo que você se lembra: o ambiente, as pessoas, os objetos, as emoções, as cores, os eventos..."
           rows={5}
-          className="w-full bg-mystic-input border border-gold-subtle rounded-xl p-4 font-body text-sm text-text-primary placeholder:text-text-muted resize-none focus:outline-none focus:border-gold/50 transition-colors"
+          className="w-full bg-black/20 border border-white/10 rounded-xl p-4 font-body text-sm text-text-primary placeholder:text-text-muted resize-none focus:outline-none focus:border-gold/50 transition-colors"
         />
 
         {/* Footer row */}
