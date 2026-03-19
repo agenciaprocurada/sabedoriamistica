@@ -47,25 +47,45 @@ export function HeroForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-2xl mx-auto flex flex-col gap-4"
+      className="w-full max-w-xl mx-auto"
     >
-      <textarea
-        value={dream}
-        onChange={(e) => setDream(e.target.value)}
-        placeholder="Descreva seu sonho com o máximo de detalhes… lugares, pessoas, emoções, cores…"
-        rows={4}
-        className="w-full rounded-2xl bg-mystic-elevated border border-gold-subtle focus:border-gold focus:ring-1 focus:ring-gold outline-none resize-none font-body text-text-primary placeholder:text-text-muted text-base px-5 py-4 transition-colors duration-200"
-      />
-      <button
-        type="submit"
-        disabled={!dream.trim()}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-gold hover:bg-gold-light disabled:opacity-50 disabled:cursor-not-allowed text-mystic-bg font-body font-semibold text-lg px-10 py-4 shadow-gold hover:shadow-gold-lg transition-all duration-200"
-      >
-        ✨ Interpretar Sonho Grátis
-      </button>
-      <p className="font-body text-text-muted text-xs text-center">
-        100% gratuito &nbsp;•&nbsp; Resultado instantâneo &nbsp;•&nbsp; Interpretação personalizada
-      </p>
+      <div className="bg-mystic-card border border-gold-subtle rounded-2xl p-6 space-y-5">
+        {/* Card header */}
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-gold text-lg leading-none">✦</span>
+            <h2 className="font-display text-xl text-text-primary font-semibold">
+              Descreva seu sonho com detalhes
+            </h2>
+          </div>
+          <p className="font-body text-text-secondary text-sm pl-6">
+            Quanto mais detalhes você incluir, mais precisa será a interpretação.
+          </p>
+        </div>
+
+        {/* Textarea */}
+        <textarea
+          value={dream}
+          onChange={(e) => setDream(e.target.value)}
+          placeholder="Escreva tudo que você se lembra: o ambiente, as pessoas, os objetos, as emoções, as cores, os eventos..."
+          rows={5}
+          className="w-full bg-mystic-input border border-gold-subtle rounded-xl p-4 font-body text-sm text-text-primary placeholder:text-text-muted resize-none focus:outline-none focus:border-gold/50 transition-colors"
+        />
+
+        {/* Footer row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1 border-t border-gold-subtle">
+          <p className="font-body text-text-muted text-xs text-center sm:text-left">
+            100% gratuito&nbsp;•&nbsp;Resultado instantâneo&nbsp;•&nbsp;Interpretação personalizada
+          </p>
+          <button
+            type="submit"
+            disabled={!dream.trim()}
+            className="shrink-0 font-body text-sm font-semibold bg-gold hover:bg-gold-light disabled:opacity-50 disabled:cursor-not-allowed text-mystic-bg px-6 py-3 rounded-full transition-colors whitespace-nowrap"
+          >
+            ✦ Interpretar Sonho Grátis
+          </button>
+        </div>
+      </div>
     </form>
   );
 }
