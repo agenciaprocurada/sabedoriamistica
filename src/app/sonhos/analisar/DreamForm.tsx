@@ -2,14 +2,12 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Textarea } from "@/components/ui/Textarea";
-import { Button } from "@/components/ui/Button";
 import { MysticLoader } from "@/components/ui/MysticLoader";
 
 const LOADING_MESSAGES = [
   "Interpretando seu sonho...",
   "Decodificando os símbolos...",
-  "Atravessando os véus do inconsciente...",
+  "Analisando padrões do inconsciente...",
   "Revelando as mensagens ocultas...",
 ];
 
@@ -77,8 +75,8 @@ export function DreamForm() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 gap-6">
-        <MysticLoader text={loadingMsg} size={64} />
+      <div className="bg-mystic-card border border-gold-subtle rounded-2xl p-8 flex flex-col items-center gap-6">
+        <MysticLoader text={loadingMsg} size={56} />
         <p className="font-body text-text-muted text-sm text-center max-w-xs">
           A interpretação profunda leva alguns momentos. Aguarde com calma.
         </p>
@@ -87,40 +85,49 @@ export function DreamForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <Textarea
-        label="Descreva seu sonho"
-        placeholder="Escreva tudo que você se lembra: o ambiente, as pessoas, os objetos, as emoções, as cores, os eventos... Quanto mais detalhes, mais profunda será a interpretação."
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        charCount
-        maxLength={2000}
-        className="min-h-[200px]"
-        required
-      />
+    <form onSubmit={handleSubmit}>
+      <div className="bg-mystic-card border border-gold-subtle rounded-2xl p-6 space-y-5">
+        {/* Card header */}
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <span className="text-gold text-lg leading-none">✦</span>
+            <h2 className="font-display text-xl text-text-primary font-semibold">
+              Descreva seu sonho com detalhes
+            </h2>
+          </div>
+          <p className="font-body text-text-secondary text-sm pl-6">
+            Quanto mais detalhes você incluir, mais precisa será a interpretação.
+          </p>
+        </div>
 
-      <div className="bg-mystic-elevated rounded-xl px-4 py-3 flex items-start gap-3">
-        <span className="text-lg mt-0.5">💡</span>
-        <p className="font-body text-text-muted text-sm leading-relaxed">
-          <span className="text-text-secondary font-medium">Dica:</span> Inclua
-          as emoções que sentiu durante o sonho, as cores predominantes e se
-          havia pessoas conhecidas ou estranhas.
-        </p>
+        {/* Textarea */}
+        <textarea
+          placeholder="Escreva tudo que você se lembra: o ambiente, as pessoas, os objetos, as emoções, as cores, os eventos..."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          className="w-full min-h-[180px] bg-mystic-input border border-gold-subtle rounded-xl p-4 font-body text-sm text-text-primary placeholder:text-text-muted resize-none focus:outline-none focus:border-gold/50 transition-colors"
+          required
+        />
+
+        {error && (
+          <p className="font-body text-sm text-center px-3 py-2 rounded-lg bg-gold-subtle text-gold border border-gold/20">
+            {error}
+          </p>
+        )}
+
+        {/* Footer row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1 border-t border-gold-subtle">
+          <p className="font-body text-text-muted text-xs text-center sm:text-left">
+            100% gratuito&nbsp;•&nbsp;Resultado instantâneo&nbsp;•&nbsp;Interpretação personalizada
+          </p>
+          <button
+            type="submit"
+            className="shrink-0 font-body text-sm font-semibold bg-gold hover:bg-gold-light text-mystic-bg px-6 py-3 rounded-full transition-colors whitespace-nowrap"
+          >
+            ✦ Interpretar Sonho Grátis
+          </button>
+        </div>
       </div>
-
-      {error && (
-        <p className="font-body text-sm text-center px-3 py-2 rounded-lg bg-gold-subtle text-gold border border-gold/20">
-          {error}
-        </p>
-      )}
-
-      <Button type="submit" variant="primary" fullWidth size="lg">
-        Revelar a Interpretação
-      </Button>
-
-      <p className="font-body text-text-muted text-xs text-center">
-        ✨ Interpretação gratuita e personalizada
-      </p>
     </form>
   );
 }
