@@ -21,6 +21,21 @@ function formatCellphone(value: string) {
   return digits.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3").replace(/-$/, "");
 }
 
+function validateCPF(cpf: string): boolean {
+  const d = cpf.replace(/\D/g, "");
+  if (d.length !== 11 || /^(\d)\1+$/.test(d)) return false;
+  let sum = 0;
+  for (let i = 0; i < 9; i++) sum += parseInt(d[i]) * (10 - i);
+  let r = (sum * 10) % 11;
+  if (r === 10 || r === 11) r = 0;
+  if (r !== parseInt(d[9])) return false;
+  sum = 0;
+  for (let i = 0; i < 10; i++) sum += parseInt(d[i]) * (11 - i);
+  r = (sum * 10) % 11;
+  if (r === 10 || r === 11) r = 0;
+  return r === parseInt(d[10]);
+}
+
 function formatTaxId(value: string) {
   const digits = value.replace(/\D/g, "").slice(0, 14);
   if (digits.length <= 11) {
@@ -53,6 +68,13 @@ export function MeusDadosForm({ initialData }: Props) {
     e.preventDefault();
     setStatus("saving");
     setErrorMsg("");
+
+    const digits = taxId.replace(/\D/g, "");
+    if (digits.length === 11 && !validateCPF(taxId)) {
+      setStatus("error");
+      setErrorMsg("CPF inválido. Verifique os números digitados.");
+      return;
+    }
 
     const res = await fetch("/api/perfil", {
       method: "PATCH",

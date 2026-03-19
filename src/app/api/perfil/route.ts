@@ -35,6 +35,26 @@ export async function PATCH(request: Request) {
       );
     }
 
+    if (cleanTaxId.length === 11) {
+      if (/^(\d)\1+$/.test(cleanTaxId)) {
+        return NextResponse.json({ error: "CPF inválido." }, { status: 400 });
+      }
+      let sum = 0;
+      for (let i = 0; i < 9; i++) sum += parseInt(cleanTaxId[i]) * (10 - i);
+      let r = (sum * 10) % 11;
+      if (r === 10 || r === 11) r = 0;
+      if (r !== parseInt(cleanTaxId[9])) {
+        return NextResponse.json({ error: "CPF inválido. Verifique os números." }, { status: 400 });
+      }
+      sum = 0;
+      for (let i = 0; i < 10; i++) sum += parseInt(cleanTaxId[i]) * (11 - i);
+      r = (sum * 10) % 11;
+      if (r === 10 || r === 11) r = 0;
+      if (r !== parseInt(cleanTaxId[10])) {
+        return NextResponse.json({ error: "CPF inválido. Verifique os números." }, { status: 400 });
+      }
+    }
+
     const { error } = await supabase
       .from("profiles")
       .update({
