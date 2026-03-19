@@ -125,6 +125,7 @@ export async function POST(request: Request) {
       brCodeBase64: pix.brCodeBase64,
       expiresAt: pix.expiresAt,
       amount: pix.amount,
+      devMode: pix.devMode ?? false,
     });
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);

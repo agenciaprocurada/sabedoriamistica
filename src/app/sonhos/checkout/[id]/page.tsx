@@ -25,7 +25,9 @@ export default function CheckoutPage() {
     brCodeBase64: string;
     expiresAt: string;
     amount: number;
+    devMode: boolean;
   } | null>(null);
+  const [simulating, setSimulating] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [copied, setCopied] = useState(false);
   const [countdown, setCountdown] = useState("");
@@ -101,6 +103,20 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (phase === "pix" && pixData) startPolling();
   }, [phase, pixData, startPolling]);
+
+  async function simulatePayment() {
+    if (!pixData || simulating) return;
+    setSimulating(true);
+    try {
+      await fetch("/api/pagamentos/simular-pix", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pixId: pixData.pixId }),
+      });
+    } finally {
+      setSimulating(false);
+    }
+  }
 
   async function copyCode() {
     if (!pixData?.brCode) return;
@@ -203,6 +219,24 @@ export default function CheckoutPage() {
               <>
                 <span>📋</span> Copiar código PIX
               </>
+            )}
+          </button>
+        )}
+
+        {/* Botão de simulação — apenas em dev */}
+        {pixData?.devMode && (
+          <button
+            onClick={simulatePayment}
+            disabled={simulating}
+            className="w-full flex items-center justify-center gap-2 font-body text-xs font-medium border border-dashed border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/10 disabled:opacity-50 px-5 py-2.5 rounded-full transition-colors duration-200"
+          >
+            {simulating ? (
+              <>
+                <span className="h-3 w-3 rounded-full border border-yellow-400 border-t-transparent animate-spin" />
+                Simulando...
+              </>
+            ) : (
+              "⚡ Simular Pagamento (Dev)"
             )}
           </button>
         )}
