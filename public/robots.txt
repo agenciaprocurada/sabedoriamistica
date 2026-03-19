@@ -6,5 +6,6 @@ Disallow: /sonhos/resultado/
 Disallow: /sonhos/checkout/
 Disallow: /sonhos/completo/
 Disallow: /meus-dados/
+Disallow: /sabedoriaadm/
 
 Sitemap: https://sabedoriamistica.com.br/sitemap.xml
