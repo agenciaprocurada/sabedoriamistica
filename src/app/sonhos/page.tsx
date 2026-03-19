@@ -2,12 +2,31 @@ import type { Metadata } from "next";
 import { Badge, Card } from "@/components/ui";
 import { HeroForm } from "./HeroForm";
 
+const PAGE_URL = "https://sabedoriamistica.com.br/sonhos";
+const OG_DESCRIPTION =
+  "Descubra o significado profundo dos seus sonhos. Interpretação personalizada com simbologia e arquétipos.";
+
 export const metadata: Metadata = {
   title: "Significado dos Sonhos — Descubra o que seu sonho quer dizer | Sabedoria Mística",
-  description:
-    "Descubra o significado profundo do seu sonho. Análise personalizada com simbologia, arquétipos e mensagens do inconsciente. Interpretação gratuita e instantânea.",
+  description: OG_DESCRIPTION,
   keywords:
     "significado dos sonhos, sonhei com, interpretação de sonhos, o que significa sonhar",
+  openGraph: {
+    title: "Descubra o que o Universo está Tentando lhe Dizer",
+    description: OG_DESCRIPTION,
+    url: PAGE_URL,
+    siteName: "Sabedoria Mística",
+    type: "website",
+    locale: "pt_BR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Descubra o que o Universo está Tentando lhe Dizer",
+    description: OG_DESCRIPTION,
+  },
+  alternates: {
+    canonical: PAGE_URL,
+  },
 };
 
 const steps = [
@@ -102,6 +121,10 @@ function MoonIcon() {
 export default function SonhosPage() {
   return (
     <div className="space-y-24 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* ── Hero ── */}
       <section className="flex flex-col items-center text-center gap-6 pt-8">
@@ -214,3 +237,21 @@ export default function SonhosPage() {
     </div>
   );
 }
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Sabedoria Mística — Interpretação de Sonhos",
+  url: "https://sabedoriamistica.com.br/sonhos",
+  description:
+    "Descubra o significado profundo dos seus sonhos. Interpretação personalizada com simbologia e arquétipos.",
+  applicationCategory: "LifestyleApplication",
+  operatingSystem: "Web",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "BRL",
+    description: "Interpretação gratuita de sonhos",
+  },
+  inLanguage: "pt-BR",
+};

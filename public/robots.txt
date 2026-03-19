@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /sonhos/analisar/
+Disallow: /sonhos/resultado/
+Disallow: /sonhos/checkout/
+Disallow: /sonhos/completo/
+Disallow: /meus-dados/
+
+Sitemap: https://sabedoriamistica.com.br/sitemap.xml
