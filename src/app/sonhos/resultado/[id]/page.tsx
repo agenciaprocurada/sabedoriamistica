@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Badge } from "@/components/ui";
 import { DreamCollapse } from "./DreamCollapse";
 import { AnalysisMarkdown } from "./AnalysisMarkdown";
+import { CheckoutButton } from "./CheckoutButton";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -116,12 +117,7 @@ export default async function ResultadoPage({ params }: Props) {
               <p className="font-display text-4xl font-bold text-gold">R$ 9,90</p>
               <p className="font-body text-text-muted text-xs">pagamento único</p>
             </div>
-            <a
-              href={`/sonhos/checkout/${params.id}`}
-              className="block w-full text-center font-body font-semibold text-lg bg-gold hover:bg-gold-light text-mystic-bg px-8 py-4 rounded-full shadow-gold hover:shadow-gold-lg transition-all duration-200"
-            >
-              ✨ DESBLOQUEAR INTERPRETAÇÃO COMPLETA
-            </a>
+            <CheckoutButton dreamId={params.id} />
             <p className="font-body text-text-muted text-xs text-center">
               🔒 Pagamento seguro &nbsp;•&nbsp; Resultado instantâneo
             </p>
