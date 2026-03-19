@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     // Busca o sonho
     const { data: dream } = await supabase
       .from("dreams")
-      .select("id, description")
+      .select("id, description, free_analysis")
       .eq("id", payment.dream_id)
       .single();
 
@@ -73,9 +73,9 @@ export async function POST(request: Request) {
       .update({ is_paid: true, status: "paid_analyzed" })
       .eq("id", dream.id);
 
-    // Gera análise em background sem bloquear a resposta
+    // Gera análise em background (continuando a partir da free)
     waitUntil(
-      generateDreamAnalysis(dream.description, "paid")
+      generateDreamAnalysis(dream.description, "paid", dream.free_analysis ?? undefined)
         .then((paidAnalysis) =>
           supabase
             .from("dreams")

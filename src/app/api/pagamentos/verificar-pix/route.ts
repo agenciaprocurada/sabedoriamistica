@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 
     const { data: dream } = await serviceSupabase
       .from("dreams")
-      .select("id, description, is_paid")
+      .select("id, description, free_analysis, is_paid")
       .eq("id", dreamId)
       .single();
 
@@ -83,9 +83,9 @@ export async function POST(request: Request) {
       .update({ is_paid: true, status: "paid_analyzed" })
       .eq("id", dreamId);
 
-    // Gera análise em background
+    // Gera análise em background (continuando a partir da free)
     waitUntil(
-      generateDreamAnalysis(dream.description, "paid")
+      generateDreamAnalysis(dream.description, "paid", dream.free_analysis ?? undefined)
         .then((paidAnalysis) =>
           serviceSupabase
             .from("dreams")

@@ -14,7 +14,8 @@ function loadPrompt(filename: string): string {
 
 export async function generateDreamAnalysis(
   description: string,
-  type: "free" | "paid"
+  type: "free" | "paid",
+  freeAnalysis?: string
 ): Promise<string> {
   const systemPrompt =
     type === "free"
@@ -29,9 +30,13 @@ export async function generateDreamAnalysis(
     },
   });
 
-  const result = await model.generateContent(
-    `Analise este sonho:\n\n"${description}"`
-  );
+  let userPrompt = `Analise este sonho:\n\n"${description}"`;
+
+  if (type === "paid" && freeAnalysis) {
+    userPrompt += `\n\nAbaixo está a interpretação gratuita que já foi entregue ao usuário. Sua análise completa deve aprofundar, expandir e continuar a partir dela — não repita o que já foi dito:\n\n---\n${freeAnalysis}\n---`;
+  }
+
+  const result = await model.generateContent(userPrompt);
 
   return result.response.text();
 }
