@@ -71,12 +71,15 @@ export async function POST(request: Request) {
       return NextResponse.json({ billingUrl: existingPayment.abacate_billing_url });
     }
 
+    // AbacatePay sempre cria um produto novo por billing (limitação da API deles)
+    // externalId único evita conflito; reuso de billing pendente já minimiza criações
+    const billingRef = `dream-${dreamId.slice(0, 8)}-${Date.now()}`;
     const payload = {
       frequency: "ONE_TIME",
       methods: ["PIX"],
       products: [
         {
-          externalId: PRODUCTS.dream_analysis.externalId,
+          externalId: billingRef,
           name: PRODUCTS.dream_analysis.name,
           quantity: PRODUCTS.dream_analysis.quantity,
           price: PRODUCTS.dream_analysis.price,
