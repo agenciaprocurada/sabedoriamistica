@@ -9,11 +9,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        mystic: {
+          bg: "#0B0D1A",
+          card: "#111427",
+          cardHover: "#161938",
+          elevated: "#1A1D35",
+          input: "#0D1020",
+        },
+        gold: {
+          DEFAULT: "#D4A843",
+          light: "#E8C66A",
+          dark: "#A07D2E",
+          subtle: "rgba(212,168,67,0.15)",
+          glow: "rgba(212,168,67,0.20)",
+        },
+        text: {
+          primary: "#F0EBE0",
+          secondary: "#9B9484",
+          muted: "#5C5647",
+        },
+      },
+      fontFamily: {
+        display: ["var(--font-playfair)", "Georgia", "serif"],
+        body: ["var(--font-inter)", "system-ui", "sans-serif"],
+        accent: ["var(--font-cormorant)", "Georgia", "serif"],
+      },
+      boxShadow: {
+        gold: "0 0 20px rgba(212,168,67,0.20)",
+        "gold-lg": "0 0 40px rgba(212,168,67,0.20)",
       },
     },
   },
   plugins: [],
 };
+
 export default config;
