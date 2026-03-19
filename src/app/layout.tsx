@@ -57,7 +57,7 @@ export default async function RootLayout({
       lang="pt-BR"
       className={`${playfair.variable} ${inter.variable} ${cormorant.variable}`}
     >
-      <body className="min-h-screen flex flex-col bg-mystic-bg text-text-primary">
+      <body className="min-h-screen flex flex-col text-text-primary">
         <StarryBackground />
         <Header user={headerUser} />
         <main className="flex-1 relative z-10">

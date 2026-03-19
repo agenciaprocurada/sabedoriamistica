@@ -8,12 +8,15 @@
   }
 
   html {
-    @apply bg-mystic-bg text-text-primary;
+    @apply text-text-primary;
+    background-color: #0B0D1A;
   }
 
   body {
-    @apply bg-mystic-bg text-text-primary font-body antialiased;
+    @apply text-text-primary font-body antialiased;
     min-height: 100vh;
+    background: linear-gradient(180deg, #141C52 0%, #0D0F28 50%, #0B0D1A 100%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4, h5, h6 {
