@@ -47,8 +47,13 @@ export function HeroForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-xl mx-auto"
+      className="w-full max-w-xl mx-auto relative"
     >
+      {/* Glow radial por trás do card */}
+      <div
+        className="absolute -inset-6 -z-10 blur-3xl opacity-50 rounded-3xl pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at 60% 40%, #1E2E9A 0%, #141C52 50%, transparent 75%)" }}
+      />
       <div className="bg-mystic-card border border-gold-subtle rounded-2xl p-6 space-y-5">
         {/* Card header */}
         <div className="space-y-1">
