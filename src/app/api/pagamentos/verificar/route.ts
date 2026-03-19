@@ -52,9 +52,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ isPaid: false });
     }
 
-    // Consulta o status do billing na AbacatePay
+    // Consulta lista de billings e filtra pelo ID
     const apiRes = await fetch(
-      `https://api.abacatepay.com/v1/billing/${payment.abacate_billing_id}`,
+      "https://api.abacatepay.com/v1/billing/list",
       {
         headers: {
           Authorization: `Bearer ${apiKey}`,
@@ -69,7 +69,11 @@ export async function POST(request: Request) {
     }
 
     const result = await apiRes.json();
-    const billingStatus: string = result?.data?.status ?? result?.status ?? "";
+    const billings: { id: string; status: string }[] = result?.data ?? [];
+    const billing = billings.find((b) => b.id === payment.abacate_billing_id);
+    const billingStatus: string = billing?.status ?? "";
+
+    console.log("AbacatePay billing status para", payment.abacate_billing_id, ":", billingStatus);
 
     if (billingStatus !== "PAID") {
       return NextResponse.json({ isPaid: false });
