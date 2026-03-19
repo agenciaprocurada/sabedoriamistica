@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { generateDreamAnalysis } from "@/lib/gemini/client";
+import { waitUntil } from "@vercel/functions";
 
 function getServiceClient() {
   return createServiceClient(
@@ -103,28 +104,23 @@ export async function POST(request: Request) {
       .update({ status: "completed", completed_at: new Date().toISOString() })
       .eq("id", payment.id);
 
-    // Gera análise paga
-    let paidAnalysis: string;
-    try {
-      paidAnalysis = await generateDreamAnalysis(dream.description, "paid");
-    } catch (err) {
-      console.error("Erro ao gerar análise paga:", err);
-      // Marca como pago mesmo sem análise — polling vai mostrar PollingFallback
-      await serviceSupabase
-        .from("dreams")
-        .update({ is_paid: true, status: "paid_analyzed" })
-        .eq("id", dreamId);
-      return NextResponse.json({ isPaid: true });
-    }
-
+    // Marca is_paid=true imediatamente para liberar o PaymentPolling
     await serviceSupabase
       .from("dreams")
-      .update({
-        paid_analysis: paidAnalysis,
-        is_paid: true,
-        status: "paid_analyzed",
-      })
+      .update({ is_paid: true, status: "paid_analyzed" })
       .eq("id", dreamId);
+
+    // Gera análise em background sem bloquear a resposta
+    waitUntil(
+      generateDreamAnalysis(dream.description, "paid")
+        .then((paidAnalysis) =>
+          serviceSupabase
+            .from("dreams")
+            .update({ paid_analysis: paidAnalysis })
+            .eq("id", dreamId)
+        )
+        .catch((err) => console.error("Erro ao gerar análise paga (verificar):", err))
+    );
 
     return NextResponse.json({ isPaid: true });
   } catch (err) {

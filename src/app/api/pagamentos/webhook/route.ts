@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { generateDreamAnalysis } from "@/lib/gemini/client";
+import { waitUntil } from "@vercel/functions";
 
 // Webhook usa service-role key para bypass RLS (operação interna)
 function createServiceClient() {
@@ -66,24 +67,23 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
-    // Gera análise completa via Gemini
-    let paidAnalysis: string;
-    try {
-      paidAnalysis = await generateDreamAnalysis(dream.description, "paid");
-    } catch (err) {
-      console.error("Erro ao gerar análise paga:", err);
-      return NextResponse.json({ received: true }, { status: 200 });
-    }
-
-    // Salva análise no dream
+    // Marca is_paid=true imediatamente (PollingFallback vai aguardar paid_analysis)
     await supabase
       .from("dreams")
-      .update({
-        paid_analysis: paidAnalysis,
-        is_paid: true,
-        status: "paid_analyzed",
-      })
+      .update({ is_paid: true, status: "paid_analyzed" })
       .eq("id", dream.id);
+
+    // Gera análise em background sem bloquear a resposta
+    waitUntil(
+      generateDreamAnalysis(dream.description, "paid")
+        .then((paidAnalysis) =>
+          supabase
+            .from("dreams")
+            .update({ paid_analysis: paidAnalysis })
+            .eq("id", dream.id)
+        )
+        .catch((err) => console.error("Erro ao gerar análise paga (webhook):", err))
+    );
 
     return NextResponse.json({ received: true });
   } catch (err) {
