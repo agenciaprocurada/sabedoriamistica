@@ -11,7 +11,7 @@ interface HeaderProps {
 
 export function Header({ user }: HeaderProps) {
   return (
-    <header className="relative z-10 w-full border-b border-gold-subtle bg-mystic-bg/80 backdrop-blur-sm">
+    <header className="relative z-40 w-full border-b border-gold-subtle bg-mystic-bg/80 backdrop-blur-sm">
       <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
 
         {/* Logo */}
