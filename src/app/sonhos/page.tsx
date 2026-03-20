@@ -120,7 +120,7 @@ function MoonIcon() {
 
 export default function SonhosPage() {
   return (
-    <div className="space-y-24 pb-8 md:py-8">
+    <div className="space-y-24 pb-8 md:py-8 -mt-5 md:mt-0">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -128,11 +128,13 @@ export default function SonhosPage() {
 
       {/* ── Hero ── */}
       <section className="flex flex-col items-center text-center gap-6 md:pt-8">
-        <MoonIcon />
+        <div className="hidden md:block">
+          <MoonIcon />
+        </div>
 
         <Badge variant="solid">✨ Interpretação Gratuita</Badge>
 
-        <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary leading-tight max-w-3xl text-balance">
+        <h1 className="font-display text-[22px] md:text-5xl lg:text-6xl font-bold text-text-primary leading-tight max-w-3xl whitespace-nowrap md:text-balance md:whitespace-normal">
           Descubra o que o{" "}
           <span className="text-gold">Universo</span> está Tentando lhe Dizer
         </h1>
