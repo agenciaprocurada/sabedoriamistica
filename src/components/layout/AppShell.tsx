@@ -22,7 +22,7 @@ export function AppShell({
     <>
       {header}
       <main className="flex-1 relative z-10">
-        <div className="max-w-5xl mx-auto px-6 pt-[10px] pb-10 md:pt-10">{children}</div>
+        <div className="max-w-5xl mx-auto px-6 pt-0 pb-10 md:pt-10">{children}</div>
       </main>
       {footer}
     </>
