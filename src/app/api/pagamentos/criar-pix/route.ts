@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     const cutoff = new Date(Date.now() - 50 * 60 * 1000).toISOString();
     const { data: existing } = await supabase
       .from("payments")
-      .select("abacate_billing_id, abacate_billing_url, created_at")
+      .select("abacate_billing_id, abacate_billing_url, brcode, created_at")
       .eq("dream_id", dreamId)
       .eq("user_id", user.id)
       .eq("status", "pending")
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
       ).toISOString();
       return NextResponse.json({
         pixId: existing.abacate_billing_id,
-        brCode: null, // não armazenado, cliente deve copiar do QR
+        brCode: existing.brcode ?? null,
         brCodeBase64: existing.abacate_billing_url,
         expiresAt,
         amount: 990,
@@ -117,6 +117,7 @@ export async function POST(request: Request) {
       status: "pending",
       abacate_billing_id: pix.id,
       abacate_billing_url: pix.brCodeBase64,
+      brcode: pix.brCode ?? null,
     });
 
     return NextResponse.json({
