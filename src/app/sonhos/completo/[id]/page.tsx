@@ -106,16 +106,10 @@ export default async function CompletoPage({ params, searchParams }: Props) {
       {/* ── CTAs ── */}
       <div className="flex flex-col sm:flex-row gap-3">
         <a
-          href="/sonhos/analisar"
+          href="/sonhos"
           className="flex-1 text-center font-body font-semibold text-base bg-gold hover:bg-gold-light text-mystic-bg px-6 py-3 rounded-full shadow-gold transition-all duration-200"
         >
           🌙 Interpretar Outro Sonho
-        </a>
-        <a
-          href="/sonhos/meus"
-          className="flex-1 text-center font-body text-sm border border-gold-subtle text-text-secondary px-6 py-3 rounded-full hover:bg-mystic-elevated transition-colors duration-200"
-        >
-          Voltar ao Portal
         </a>
       </div>
 
