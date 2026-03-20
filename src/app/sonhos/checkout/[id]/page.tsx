@@ -206,10 +206,11 @@ export default function CheckoutPage() {
         </ol>
 
         {/* Botão copiar código */}
-        {pixData?.brCode && (
+        {pixData && (
           <button
             onClick={copyCode}
-            className="w-full flex items-center justify-center gap-2 font-body text-sm font-semibold border border-gold text-gold hover:bg-gold/10 px-5 py-3 rounded-full transition-colors duration-200"
+            disabled={!pixData.brCode}
+            className="w-full flex items-center justify-center gap-2 font-body text-sm font-semibold border border-gold text-gold hover:bg-gold/10 disabled:opacity-50 disabled:cursor-not-allowed px-5 py-3 rounded-full transition-colors duration-200"
           >
             {copied ? (
               <>
