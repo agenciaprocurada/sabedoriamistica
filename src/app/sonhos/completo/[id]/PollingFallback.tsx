@@ -141,7 +141,7 @@ export function PollingFallback({ dreamId }: { dreamId: string }) {
       </div>
 
       <p className="font-body text-text-secondary text-sm max-w-xs">
-        Nossa IA está consultando todas as bases do Sabedoria Mística para gerar uma análise única para você.
+        Nossos especialistas estão consultando as bibliotecas de símbolos e arquétipos para preparar sua análise única.
       </p>
     </div>
   );
