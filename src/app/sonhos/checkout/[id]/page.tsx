@@ -223,23 +223,6 @@ export default function CheckoutPage() {
           </button>
         )}
 
-        {/* Botão de simulação — apenas em dev */}
-        {pixData?.devMode && (
-          <button
-            onClick={simulatePayment}
-            disabled={simulating}
-            className="w-full flex items-center justify-center gap-2 font-body text-xs font-medium border border-dashed border-yellow-500/50 text-yellow-400 hover:bg-yellow-500/10 disabled:opacity-50 px-5 py-2.5 rounded-full transition-colors duration-200"
-          >
-            {simulating ? (
-              <>
-                <span className="h-3 w-3 rounded-full border border-yellow-400 border-t-transparent animate-spin" />
-                Simulando...
-              </>
-            ) : (
-              "⚡ Simular Pagamento (Dev)"
-            )}
-          </button>
-        )}
 
         {/* Status + countdown */}
         <div className="w-full space-y-3 pt-2 border-t border-gold-subtle">
