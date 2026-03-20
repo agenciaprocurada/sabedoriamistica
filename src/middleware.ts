@@ -43,6 +43,16 @@ export async function middleware(request: NextRequest) {
   }
 
   // ── 2. Guard portal (Supabase) ──────────────────────────────
+  // Só chama o Supabase quando a rota realmente precisa de auth
+  const isPortalProtected = PORTAL_PROTECTED.some((p) =>
+    pathname.startsWith(p)
+  );
+  const needsAuth = isPortalProtected || pathname.startsWith("/login");
+
+  if (!needsAuth) {
+    return NextResponse.next();
+  }
+
   const response = NextResponse.next({
     request: { headers: request.headers },
   });
@@ -74,9 +84,6 @@ export async function middleware(request: NextRequest) {
   }
 
   // Usuário não logado em rota protegida do portal → /login?redirect=...
-  const isPortalProtected = PORTAL_PROTECTED.some((p) =>
-    pathname.startsWith(p)
-  );
   if (!user && isPortalProtected) {
     const loginUrl = new URL("/login", request.url);
     loginUrl.searchParams.set("redirect", pathname);
