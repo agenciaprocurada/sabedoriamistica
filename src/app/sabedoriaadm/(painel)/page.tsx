@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAdminSupabase } from "@/lib/admin/supabase";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Dashboard | Admin SM",
   robots: "noindex, nofollow",

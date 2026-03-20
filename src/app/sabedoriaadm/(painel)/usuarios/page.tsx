@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getAdminSupabase } from "@/lib/admin/supabase";
 import { UserSearch } from "./UserSearch";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Usuários | Admin SM",
   robots: "noindex, nofollow",

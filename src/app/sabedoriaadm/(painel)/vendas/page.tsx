@@ -4,6 +4,8 @@ import { getAdminSupabase } from "@/lib/admin/supabase";
 import { VendasFilters } from "./VendasFilters";
 import { VendaRow } from "./VendaDetail";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Vendas | Admin SM",
   robots: "noindex, nofollow",

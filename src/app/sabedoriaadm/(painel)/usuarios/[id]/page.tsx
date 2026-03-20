@@ -4,6 +4,8 @@ import { getAdminSupabase } from "@/lib/admin/supabase";
 import { EditUserForm } from "./EditUserForm";
 import { DreamRow } from "./DreamRow";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Usuário | Admin SM",
   robots: "noindex, nofollow",
