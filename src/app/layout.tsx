@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
-import { Header } from "@/components/layout";
-import { Footer } from "@/components/layout";
-import { StarryBackground } from "@/components/layout";
+import { Header, Footer, StarryBackground, AppShell } from "@/components/layout";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
@@ -59,11 +57,12 @@ export default async function RootLayout({
     >
       <body className="min-h-screen flex flex-col text-text-primary">
         <StarryBackground />
-        <Header user={headerUser} />
-        <main className="flex-1 relative z-10">
-          <div className="max-w-5xl mx-auto px-6 py-10">{children}</div>
-        </main>
-        <Footer />
+        <AppShell
+          header={<Header user={headerUser} />}
+          footer={<Footer />}
+        >
+          {children}
+        </AppShell>
       </body>
     </html>
   );

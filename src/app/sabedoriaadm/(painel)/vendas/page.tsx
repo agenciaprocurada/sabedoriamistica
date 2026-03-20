@@ -63,39 +63,34 @@ export default async function VendasPage({
   }
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="font-display text-2xl font-bold text-text-primary">Vendas</h1>
         <VendasFilters />
       </div>
 
       <div className="bg-mystic-card border border-gold-subtle rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm font-body">
-            <thead>
-              <tr className="border-b border-gold-subtle text-text-muted text-xs uppercase tracking-wider">
-                <th className="text-left px-5 py-3">Data</th>
-                <th className="text-left px-5 py-3">Cliente</th>
-                <th className="text-left px-5 py-3">Sonho</th>
-                <th className="text-right px-5 py-3">Valor</th>
-                <th className="text-left px-5 py-3">Status</th>
-                <th className="px-5 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {(data ?? []).map((sale: any) => (
-                <VendaRow key={sale.id} sale={sale} />
-              ))}
-              {(data ?? []).length === 0 && (
-                <tr>
-                  <td colSpan={6} className="px-5 py-12 text-center text-text-muted">
-                    Nenhuma venda encontrada.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        {/* Column headers */}
+        <div className="flex items-center gap-4 px-5 py-3 border-b border-gold-subtle text-text-muted text-xs uppercase tracking-wider">
+          <div className="w-28 shrink-0">Data</div>
+          <div className="flex-1">Cliente</div>
+          <div className="hidden lg:block w-52 shrink-0">Sonho</div>
+          <div className="w-20 shrink-0 text-right">Valor</div>
+          <div className="w-24 shrink-0">Status</div>
+          <div className="w-4 shrink-0" />
         </div>
+
+        {(data ?? []).length === 0 ? (
+          <div className="px-5 py-12 text-center font-body text-sm text-text-muted">
+            Nenhuma venda encontrada.
+          </div>
+        ) : (
+          <div>
+            {(data ?? []).map((sale: any) => (
+              <VendaRow key={sale.id} sale={sale} />
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Paginação */}

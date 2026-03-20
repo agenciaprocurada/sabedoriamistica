@@ -32,12 +32,14 @@ export async function POST(request: NextRequest) {
   const validEmail = process.env.ADMIN_EMAIL;
   const validPassword = process.env.ADMIN_PASSWORD;
 
-  if (
-    !validEmail ||
-    !validPassword ||
-    email !== validEmail ||
-    password !== validPassword
-  ) {
+  if (!validEmail || !validPassword) {
+    return NextResponse.json(
+      { error: "Painel não configurado. Defina ADMIN_EMAIL, ADMIN_PASSWORD e ADMIN_SECRET." },
+      { status: 500 }
+    );
+  }
+
+  if (email.trim() !== validEmail.trim() || password !== validPassword) {
     return NextResponse.json(
       { error: "Credenciais inválidas." },
       { status: 401 }
