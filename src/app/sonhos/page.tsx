@@ -120,14 +120,14 @@ function MoonIcon() {
 
 export default function SonhosPage() {
   return (
-    <div className="space-y-24 py-8">
+    <div className="space-y-24 pb-8 md:py-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       {/* ── Hero ── */}
-      <section className="flex flex-col items-center text-center gap-6 pt-8">
+      <section className="flex flex-col items-center text-center gap-6 md:pt-8">
         <MoonIcon />
 
         <Badge variant="solid">✨ Interpretação Gratuita</Badge>
