@@ -111,13 +111,12 @@ export function HeroForm() {
       <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 space-y-5">
         {/* Card header */}
         <div className="space-y-1">
-          <div className="flex items-center gap-2">
-            <span className="text-gold text-lg leading-none">✦</span>
-            <h2 className="font-display text-xl text-text-primary font-semibold">
+          <div>
+            <h2 className="font-display text-base md:text-xl text-text-primary font-semibold whitespace-nowrap md:whitespace-normal">
               Descreva seu sonho com detalhes
             </h2>
           </div>
-          <p className="font-body text-text-secondary text-sm pl-6">
+          <p className="font-body text-text-secondary text-sm">
             Quanto mais detalhes você incluir, mais precisa será a interpretação.
           </p>
         </div>
