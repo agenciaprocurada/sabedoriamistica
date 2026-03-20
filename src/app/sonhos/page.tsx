@@ -225,7 +225,7 @@ export default function SonhosPage() {
         </h2>
 
         <a
-          href="/sonhos/analisar"
+          href="#top"
           className="inline-flex items-center justify-center gap-2 rounded-full bg-gold hover:bg-gold-light text-mystic-bg font-body font-semibold text-lg px-10 py-4 shadow-gold hover:shadow-gold-lg transition-all duration-200"
         >
           Interpretar Meu Sonho Agora
