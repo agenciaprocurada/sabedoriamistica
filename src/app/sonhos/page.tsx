@@ -134,7 +134,7 @@ export default function SonhosPage() {
 
         <Badge variant="solid">✨ Interpretação Gratuita</Badge>
 
-        <h1 className="font-display text-[22px] md:text-5xl lg:text-6xl font-bold text-text-primary leading-tight max-w-3xl whitespace-nowrap md:text-balance md:whitespace-normal">
+        <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary leading-tight max-w-3xl text-balance">
           Descubra o que o{" "}
           <span className="text-gold">Universo</span> está Tentando lhe Dizer
         </h1>
