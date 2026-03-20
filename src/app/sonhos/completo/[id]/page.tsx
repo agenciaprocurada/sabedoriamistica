@@ -96,17 +96,6 @@ export default async function CompletoPage({ params, searchParams }: Props) {
         <AnalysisMarkdown content={dream.paid_analysis} />
       </div>
 
-      {/* ── Compartilhamento ── */}
-      <div className="bg-mystic-elevated rounded-2xl border border-gold-subtle p-6 space-y-4 text-center">
-        <p className="font-display text-base font-semibold text-text-primary">
-          Indique para um amigo
-        </p>
-        <p className="font-body text-text-secondary text-sm">
-          Compartilhe essa experiência com alguém especial.
-        </p>
-        <ShareButtons dreamId={params.id} />
-      </div>
-
       {/* ── Separador ── */}
       <div className="flex items-center justify-center gap-3 text-gold opacity-60 text-sm">
         <span>✦</span>
