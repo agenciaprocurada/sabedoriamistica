@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
+import Script from "next/script";
 import { Header, Footer, StarryBackground, AppShell } from "@/components/layout";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
@@ -56,6 +57,13 @@ export default async function RootLayout({
       className={`${playfair.variable} ${inter.variable} ${cormorant.variable}`}
     >
       <body className="min-h-screen flex flex-col text-text-primary">
+        <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18030402125" strategy="afterInteractive" />
+        <Script id="gtag-init" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'AW-18030402125');
+        `}</Script>
         <StarryBackground />
         <AppShell
           header={<Header user={headerUser} />}
