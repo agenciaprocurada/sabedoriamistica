@@ -17,10 +17,16 @@ export async function generateDreamAnalysis(
   type: "free" | "paid",
   freeAnalysis?: string
 ): Promise<string> {
-  const systemPrompt =
+  let systemPrompt =
     type === "free"
       ? loadPrompt("sonhos-basico.md")
       : loadPrompt("sonhos-pago.md");
+
+  if (type === "paid") {
+    systemPrompt = systemPrompt
+      .replace("{dream_description}", description)
+      .replace("{free_analysis}", freeAnalysis ?? "(não disponível)");
+  }
 
   const model = genAI.getGenerativeModel({
     model: "gemini-2.5-flash",
@@ -30,11 +36,9 @@ export async function generateDreamAnalysis(
     },
   });
 
-  let userPrompt = `Analise este sonho:\n\n"${description}"`;
-
-  if (type === "paid" && freeAnalysis) {
-    userPrompt += `\n\nAbaixo está a interpretação gratuita que já foi entregue ao usuário. Sua análise completa deve aprofundar, expandir e continuar a partir dela — não repita o que já foi dito:\n\n---\n${freeAnalysis}\n---`;
-  }
+  const userPrompt = type === "paid"
+    ? `Gere a análise completa para o sonho descrito acima.`
+    : `Analise este sonho:\n\n"${description}"`;
 
   const result = await model.generateContent(userPrompt);
 
