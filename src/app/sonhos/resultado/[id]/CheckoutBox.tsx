@@ -60,7 +60,7 @@ export function CheckoutBox({ dreamId }: { dreamId: string }) {
       {!showCoupon ? (
         <button
           onClick={() => setShowCoupon(true)}
-          className="font-body text-xs text-text-muted hover:text-gold underline underline-offset-2 transition-colors"
+          className="font-body text-xs text-text-secondary hover:text-gold underline underline-offset-2 transition-colors"
         >
           Tenho um cupom
         </button>
