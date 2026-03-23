@@ -11,8 +11,9 @@ function parse(markdown: string): Block[] {
     .reduce<Block[]>((acc, line) => {
       const trimmed = line.trim();
       if (!trimmed) return acc;
-      if (trimmed.startsWith("### ")) {
-        acc.push({ type: "heading", text: trimmed.slice(4) });
+      if (trimmed.startsWith("## ") || trimmed.startsWith("### ")) {
+        const text = trimmed.startsWith("## ") ? trimmed.slice(3) : trimmed.slice(4);
+        acc.push({ type: "heading", text });
       } else {
         const last = acc[acc.length - 1];
         if (last?.type === "paragraph") {
