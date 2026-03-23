@@ -9,13 +9,13 @@ export interface TaroCard {
   positions: { past: string; present: string; future: string }
 }
 
-const BASE = 'https://img.sabedoriamistica.com.br'
-export const CARD_BACK = `${BASE}/images/card-back.png`
+const BASE = 'https://img.sabedoriamistica.com.br/card'
+export const CARD_BACK = `${BASE}/card-back.png`
 
 export const TARO_CARDS: TaroCard[] = [
   {
     id: 'the-fool', name: 'O Louco', number: 0,
-    image: `${BASE}/cards-taro/ar00.png`,
+    image: `${BASE}/ar00.png`,
     meanings: {
       general: 'O Louco representa o impulso de iniciar uma jornada, mesmo sem garantias. Ele simboliza liberdade, espontaneidade e confiança no desconhecido.',
       love: 'No amor, O Louco sugere novas experiências afetivas ou relações sem amarras, guiadas pela leveza e curiosidade.',
@@ -30,7 +30,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-magician', name: 'O Mago', number: 1,
-    image: `${BASE}/cards-taro/ar01.png`,
+    image: `${BASE}/ar01.png`,
     meanings: {
       general: 'O Mago simboliza iniciativa, criatividade e o poder de transformar ideias em ação.',
       love: 'No amor, representa magnetismo pessoal e a habilidade de encantar e iniciar relacionamentos com intenção clara.',
@@ -45,7 +45,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-high-priestess', name: 'A Sacerdotisa', number: 2,
-    image: `${BASE}/cards-taro/ar02.png`,
+    image: `${BASE}/ar02.png`,
     meanings: {
       general: 'A Sacerdotisa representa mistério, sabedoria oculta e o poder do silêncio e da intuição.',
       love: 'No amor, indica relações intensas, mas com emoções veladas ou não reveladas.',
@@ -60,7 +60,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-empress', name: 'A Imperatriz', number: 3,
-    image: `${BASE}/cards-taro/ar03.png`,
+    image: `${BASE}/ar03.png`,
     meanings: {
       general: 'A Imperatriz simboliza fertilidade, nutrição e abundância em todas as formas da vida.',
       love: 'No campo amoroso, representa relações férteis, sensuais e cheias de cuidado mútuo.',
@@ -75,7 +75,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-emperor', name: 'O Imperador', number: 4,
-    image: `${BASE}/cards-taro/ar04.png`,
+    image: `${BASE}/ar04.png`,
     meanings: {
       general: 'O Imperador representa estrutura, autoridade e domínio sobre o mundo material.',
       love: 'Nos relacionamentos, pode simbolizar estabilidade, mas também rigidez ou necessidade de controle.',
@@ -90,7 +90,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-hierophant', name: 'O Hierofante', number: 5,
-    image: `${BASE}/cards-taro/ar05.png`,
+    image: `${BASE}/ar05.png`,
     meanings: {
       general: 'O Hierofante representa tradição, sabedoria ancestral e os valores compartilhados por uma comunidade.',
       love: 'No amor, fala de relações guiadas por valores morais, casamento ou busca por estabilidade emocional tradicional.',
@@ -105,7 +105,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-lovers', name: 'Os Enamorados', number: 6,
-    image: `${BASE}/cards-taro/ar06.png`,
+    image: `${BASE}/ar06.png`,
     meanings: {
       general: 'Os Enamorados falam sobre escolhas importantes guiadas pelo coração, valores e afinidades profundas.',
       love: 'No amor, indicam união verdadeira, conexões de alma ou decisões afetivas cruciais.',
@@ -120,7 +120,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-chariot', name: 'O Carro', number: 7,
-    image: `${BASE}/cards-taro/ar07.png`,
+    image: `${BASE}/ar07.png`,
     meanings: {
       general: 'O Carro representa força de vontade, vitória e conquista através do foco e da autodisciplina.',
       love: 'No campo afetivo, indica paixão intensa, mas também pode sugerir impulsividade ou disputas de controle.',
@@ -135,7 +135,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'strength', name: 'A Força', number: 8,
-    image: `${BASE}/cards-taro/ar08.png`,
+    image: `${BASE}/ar08.png`,
     meanings: {
       general: 'A Força simboliza coragem, domínio emocional e a energia que transforma obstáculos com gentileza e firmeza.',
       love: 'Nos relacionamentos, indica lealdade, paciência e capacidade de lidar com conflitos de forma amorosa.',
@@ -150,7 +150,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-hermit', name: 'O Eremita', number: 9,
-    image: `${BASE}/cards-taro/ar09.png`,
+    image: `${BASE}/ar09.png`,
     meanings: {
       general: 'O Eremita simboliza introspecção, busca solitária por sabedoria e amadurecimento emocional.',
       love: 'No amor, pode representar momentos de recolhimento, solidão produtiva ou necessidade de reflexão antes de agir.',
@@ -165,7 +165,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'wheel-of-fortune', name: 'A Roda da Fortuna', number: 10,
-    image: `${BASE}/cards-taro/ar10.png`,
+    image: `${BASE}/ar10.png`,
     meanings: {
       general: 'A Roda da Fortuna simboliza mudanças inevitáveis, ciclos da vida e o poder do destino em constante movimento.',
       love: 'No amor, revela reviravoltas inesperadas, reencontros ou términos que abrem novas possibilidades.',
@@ -180,7 +180,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'justice', name: 'A Justiça', number: 11,
-    image: `${BASE}/cards-taro/ar11.png`,
+    image: `${BASE}/ar11.png`,
     meanings: {
       general: 'A Justiça representa equilíbrio, decisões racionais e a colheita das consequências de escolhas passadas.',
       love: 'No campo afetivo, indica relações que exigem clareza, honestidade e reparação de desequilíbrios.',
@@ -195,7 +195,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-hanged-man', name: 'O Enforcado', number: 12,
-    image: `${BASE}/cards-taro/ar12.png`,
+    image: `${BASE}/ar12.png`,
     meanings: {
       general: 'O Enforcado simboliza sacrifício consciente, pausa forçada e mudança de perspectiva.',
       love: 'No amor, pode indicar relações em espera, necessidade de desapego ou entrega emocional.',
@@ -210,7 +210,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'death', name: 'A Morte', number: 13,
-    image: `${BASE}/cards-taro/ar13.png`,
+    image: `${BASE}/ar13.png`,
     meanings: {
       general: 'A Morte representa encerramentos necessários, transformações profundas e renascimentos inevitáveis.',
       love: 'No amor, pode significar o fim de um ciclo afetivo ou uma mudança drástica na dinâmica da relação.',
@@ -225,7 +225,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'temperance', name: 'A Temperança', number: 14,
-    image: `${BASE}/cards-taro/ar14.png`,
+    image: `${BASE}/ar14.png`,
     meanings: {
       general: 'A Temperança simboliza harmonia, moderação e a busca pelo equilíbrio entre forças opostas.',
       love: 'Nos relacionamentos, fala de conciliação, paciência e construção gradual de vínculos profundos.',
@@ -240,7 +240,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-devil', name: 'O Diabo', number: 15,
-    image: `${BASE}/cards-taro/ar15.png`,
+    image: `${BASE}/ar15.png`,
     meanings: {
       general: 'O Diabo representa prisões emocionais, vícios, manipulações e a ilusão do controle externo.',
       love: 'No amor, aponta para relações obsessivas, tóxicas ou marcadas por desejo e apego excessivo.',
@@ -255,7 +255,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-tower', name: 'A Torre', number: 16,
-    image: `${BASE}/cards-taro/ar16.png`,
+    image: `${BASE}/ar16.png`,
     meanings: {
       general: 'A Torre simboliza rupturas repentinas, revelações impactantes e a destruição do que foi construído sobre bases frágeis.',
       love: 'No campo afetivo, sugere conflitos, términos inesperados ou verdades que abalam a relação.',
@@ -270,7 +270,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-star', name: 'A Estrela', number: 17,
-    image: `${BASE}/cards-taro/ar17.png`,
+    image: `${BASE}/ar17.png`,
     meanings: {
       general: 'A Estrela simboliza esperança, inspiração e um momento de cura após tempos difíceis.',
       love: 'No amor, indica renovação, confiança mútua e a chegada de um período mais leve e promissor.',
@@ -285,7 +285,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-moon', name: 'A Lua', number: 18,
-    image: `${BASE}/cards-taro/ar18.png`,
+    image: `${BASE}/ar18.png`,
     meanings: {
       general: 'A Lua representa ilusões, incertezas e o poder do inconsciente atuando nos bastidores da realidade.',
       love: 'No amor, pode indicar enganos, fantasias, ciúmes ou emoções mal compreendidas.',
@@ -300,7 +300,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-sun', name: 'O Sol', number: 19,
-    image: `${BASE}/cards-taro/ar19.png`,
+    image: `${BASE}/ar19.png`,
     meanings: {
       general: 'O Sol simboliza clareza, vitalidade e sucesso, marcando um momento de plenitude e alegria.',
       love: 'No campo afetivo, indica harmonia, felicidade compartilhada e laços fortes baseados na transparência.',
@@ -315,7 +315,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'judgement', name: 'O Julgamento', number: 20,
-    image: `${BASE}/cards-taro/ar20.png`,
+    image: `${BASE}/ar20.png`,
     meanings: {
       general: 'O Julgamento simboliza despertar, renascimento e a chance de reavaliar o passado para transformar o presente.',
       love: 'No amor, representa reconciliações, decisões finais ou a superação de antigos padrões emocionais.',
@@ -330,7 +330,7 @@ export const TARO_CARDS: TaroCard[] = [
   },
   {
     id: 'the-world', name: 'O Mundo', number: 21,
-    image: `${BASE}/cards-taro/ar21.png`,
+    image: `${BASE}/ar21.png`,
     meanings: {
       general: 'O Mundo representa realização, integração e a conclusão bem-sucedida de um ciclo importante.',
       love: 'No campo afetivo, simboliza uma relação plena, amadurecida e em harmonia com o caminho de ambos.',
