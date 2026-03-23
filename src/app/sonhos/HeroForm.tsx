@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { MysticLoader } from "@/components/ui";
 import { createClient } from "@/lib/supabase/client";
+import { LoginModal } from "@/components/LoginModal";
 
 const LOADING_MESSAGES = [
   "Consultando o dicionário de sonhos...",
@@ -80,11 +81,11 @@ export function HeroForm() {
   const router = useRouter();
   const [dream, setDream] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!dream.trim()) return;
-    setLoading(true);
 
     sessionStorage.setItem("pendingDream", dream.trim());
 
@@ -92,11 +93,17 @@ export function HeroForm() {
     const { data: { user } } = await supabase.auth.getUser();
 
     if (user) {
+      setLoading(true);
       router.push("/sonhos/analisar");
     } else {
-      await new Promise((r) => setTimeout(r, 2000));
-      router.push("/login?redirect=/sonhos/analisar");
+      setShowLoginModal(true);
     }
+  }
+
+  function handleLoginSuccess() {
+    setShowLoginModal(false);
+    setLoading(true);
+    router.push("/sonhos/analisar");
   }
 
   if (loading) {
@@ -104,6 +111,14 @@ export function HeroForm() {
   }
 
   return (
+    <>
+    {showLoginModal && (
+      <LoginModal
+        onSuccess={handleLoginSuccess}
+        onClose={() => setShowLoginModal(false)}
+        redirectTo="/sonhos/analisar"
+      />
+    )}
     <form
       onSubmit={handleSubmit}
       className="w-full max-w-xl mx-auto relative"
@@ -145,5 +160,6 @@ export function HeroForm() {
         </div>
       </div>
     </form>
+    </>
   );
 }

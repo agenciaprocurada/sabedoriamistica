@@ -31,9 +31,10 @@ function GoogleIcon() {
 
 interface LoginFormProps {
   redirectTo?: string;
+  onSuccess?: () => void;
 }
 
-export function LoginForm({ redirectTo = "/" }: LoginFormProps) {
+export function LoginForm({ redirectTo = "/", onSuccess }: LoginFormProps) {
   const router = useRouter();
   const supabase = createClient();
 
@@ -70,6 +71,8 @@ export function LoginForm({ redirectTo = "/" }: LoginFormProps) {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         setError("E-mail ou senha incorretos. Tente novamente.");
+      } else if (onSuccess) {
+        onSuccess();
       } else {
         router.push(redirectTo);
         router.refresh();
