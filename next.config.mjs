@@ -1,14 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "https://portal.sabedoriamistica.com.br",
-        permanent: false,
-      },
-    ];
-  },
-};
+const nextConfig = {};
 
 export default nextConfig;
