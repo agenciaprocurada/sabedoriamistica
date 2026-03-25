@@ -40,7 +40,7 @@ export function adminCookieOptions(secure: boolean) {
     httpOnly: true,
     secure,
     sameSite: "strict" as const,
-    path: "/sabedoriaadm",
+    path: "/",
     maxAge: 8 * 60 * 60,
   };
 }

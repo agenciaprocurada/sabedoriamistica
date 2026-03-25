@@ -33,6 +33,15 @@ const NAV = [
       </svg>
     ),
   },
+  {
+    href: "/sabedoriaadm/cupons",
+    label: "Cupons",
+    icon: (
+      <svg viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+        <path fillRule="evenodd" d="M5 2a2 2 0 00-2 2v3a1 1 0 001 1 1 1 0 010 2 1 1 0 00-1 1v3a2 2 0 002 2h10a2 2 0 002-2v-3a1 1 0 00-1-1 1 1 0 010-2 1 1 0 001-1V4a2 2 0 00-2-2H5zm9 4H6V4h8v2zm-8 4a3 3 0 016 0H6zm0 4v-2h8v2H6z" clipRule="evenodd" />
+      </svg>
+    ),
+  },
 ];
 
 export function AdminSidebar() {
