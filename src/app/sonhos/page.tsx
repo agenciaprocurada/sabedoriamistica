@@ -104,7 +104,7 @@ export default function SonhosPage() {
       />
 
       {/* ── Hero ── */}
-      <section className="flex flex-col items-center text-center gap-6 md:pt-8">
+      <section id="hero-form" className="flex flex-col items-center text-center gap-6 md:pt-8">
         <div className="hidden md:block">
           <MoonIcon />
         </div>
@@ -127,24 +127,35 @@ export default function SonhosPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {steps.map((step, i) => (
-            <Card key={i} hover className="relative flex flex-col gap-4">
-              {/* Número do passo */}
-              <span
-                className="absolute -top-3 -left-3 h-7 w-7 rounded-full bg-gold text-mystic-bg font-body font-bold text-xs flex items-center justify-center shadow-gold"
-              >
-                {i + 1}
-              </span>
+            <a
+              key={i}
+              href="#hero-form"
+              className="block no-underline"
+              style={{ scrollBehavior: "smooth" }}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById("hero-form")?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              <Card hover className="relative flex flex-col gap-4 cursor-pointer h-full">
+                {/* Número do passo */}
+                <span
+                  className="absolute -top-3 -left-3 h-7 w-7 rounded-full bg-gold text-mystic-bg font-body font-bold text-xs flex items-center justify-center shadow-gold"
+                >
+                  {i + 1}
+                </span>
 
-              <span className="text-4xl">{step.emoji}</span>
+                <span className="text-4xl">{step.emoji}</span>
 
-              <h3 className="font-display text-xl font-semibold text-gold">
-                {step.title}
-              </h3>
+                <h3 className="font-display text-xl font-semibold text-gold">
+                  {step.title}
+                </h3>
 
-              <p className="font-body text-text-secondary text-sm leading-relaxed">
-                {step.description}
-              </p>
-            </Card>
+                <p className="font-body text-text-secondary text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </Card>
+            </a>
           ))}
         </div>
       </section>
