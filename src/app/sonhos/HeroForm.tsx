@@ -79,7 +79,11 @@ export function HeroForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!dream.trim()) return;
+    if (!dream.trim()) {
+      alert("⚠️ Por favor, descreva seu sonho antes de continuar.");
+      textareaRef.current?.focus();
+      return;
+    }
 
     sessionStorage.setItem("pendingDream", dream.trim());
 
@@ -159,14 +163,7 @@ export function HeroForm() {
             </p>
             <button
               type="submit"
-              disabled={!dream.trim()}
-              className={`
-                w-full font-body font-bold text-base text-mystic-bg py-4 rounded-full transition-all duration-200
-                ${dream.trim()
-                  ? "bg-gold hover:bg-gold-light shadow-gold hover:shadow-gold-lg animate-pulse-subtle"
-                  : "bg-gold/50 cursor-not-allowed opacity-50"
-                }
-              `}
+              className="w-full font-body font-bold text-base text-mystic-bg py-4 rounded-full transition-all duration-200 bg-gold hover:bg-gold-light shadow-gold hover:shadow-gold-lg animate-pulse-subtle"
             >
               INTERPRETAR MEU SONHO AGORA
             </button>

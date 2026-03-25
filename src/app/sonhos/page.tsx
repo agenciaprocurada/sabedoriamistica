@@ -111,17 +111,6 @@ export default function SonhosPage() {
 
         <Badge variant="solid">✨ Interpretação Gratuita</Badge>
 
-        <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-bold text-text-primary leading-tight max-w-3xl text-balance">
-          Descubra o que o{" "}
-          <span className="text-gold">Universo</span> está Tentando lhe Dizer
-        </h1>
-
-        <p className="font-body text-text-secondary text-lg md:text-xl max-w-2xl leading-relaxed">
-          Cada sonho carrega mensagens profundas do seu inconsciente. Nossa
-          interpretação revela os símbolos, emoções e orientações ocultas nos
-          seus sonhos.
-        </p>
-
         <HeroForm />
       </section>
 
