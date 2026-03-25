@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Badge, Card } from "@/components/ui";
+import { Badge } from "@/components/ui";
 import { HeroForm } from "./HeroForm";
+import { StepsCards } from "./StepsCards";
 import { TestimonialsCarousel } from "./TestimonialsCarousel";
 import { CtaButton } from "./CtaButton";
 
@@ -30,26 +31,6 @@ export const metadata: Metadata = {
     canonical: PAGE_URL,
   },
 };
-
-const steps = [
-  {
-    emoji: "🌙",
-    title: "Descreva seu sonho",
-    description: "Conte com o máximo de detalhes tudo que você viveu enquanto dormia.",
-  },
-  {
-    emoji: "🔮",
-    title: "Interpretação profunda",
-    description:
-      "Especialistas em simbologia e sabedoria ancestral analisam cada detalhe, símbolo e emoção presente no seu sonho.",
-  },
-  {
-    emoji: "✨",
-    title: "Receba sua análise",
-    description:
-      "Descubra as mensagens ocultas, arquétipos e orientações que seu inconsciente está revelando para sua vida.",
-  },
-];
 
 
 function MoonIcon() {
@@ -125,39 +106,7 @@ export default function SonhosPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {steps.map((step, i) => (
-            <a
-              key={i}
-              href="#hero-form"
-              className="block no-underline"
-              style={{ scrollBehavior: "smooth" }}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById("hero-form")?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <Card hover className="relative flex flex-col gap-4 cursor-pointer h-full">
-                {/* Número do passo */}
-                <span
-                  className="absolute -top-3 -left-3 h-7 w-7 rounded-full bg-gold text-mystic-bg font-body font-bold text-xs flex items-center justify-center shadow-gold"
-                >
-                  {i + 1}
-                </span>
-
-                <span className="text-4xl">{step.emoji}</span>
-
-                <h3 className="font-display text-xl font-semibold text-gold">
-                  {step.title}
-                </h3>
-
-                <p className="font-body text-text-secondary text-sm leading-relaxed">
-                  {step.description}
-                </p>
-              </Card>
-            </a>
-          ))}
-        </div>
+        <StepsCards />
       </section>
 
       {/* ── Prova Social ── */}
