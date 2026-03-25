@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { timingSafeEqual } from "crypto";
 import { generateDreamAnalysis } from "@/lib/gemini/client";
 import { waitUntil } from "@vercel/functions";
 
@@ -11,19 +12,63 @@ function createServiceClient() {
   );
 }
 
-export async function POST(request: Request) {
-  try {
-    const body = await request.json();
+/**
+ * Verifica se o secret enviado na query string bate com ABACATEPAY_WEBHOOK_SECRET.
+ * Usa timingSafeEqual para evitar timing attacks.
+ */
+function verifyWebhookSecret(url: string): boolean {
+  const expected = process.env.ABACATEPAY_WEBHOOK_SECRET;
+  if (!expected) {
+    console.error("ABACATEPAY_WEBHOOK_SECRET não configurado — webhook bloqueado.");
+    return false;
+  }
 
-    // Validação básica do evento
+  const { searchParams } = new URL(url);
+  const received = searchParams.get("secret") ?? "";
+
+  if (!received) return false;
+
+  try {
+    const a = Buffer.from(received);
+    const b = Buffer.from(expected);
+    // buffers devem ter o mesmo tamanho para timingSafeEqual
+    if (a.length !== b.length) return false;
+    return timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
+
+export async function POST(request: Request) {
+  // ── 1. Autenticação do webhook ──────────────────────────────────────────
+  if (!verifyWebhookSecret(request.url)) {
+    console.warn("Webhook recebido com secret inválido:", request.url);
+    // Retorna 200 para não revelar ao atacante que o secret está errado
+    return NextResponse.json({ received: true }, { status: 200 });
+  }
+
+  try {
+    // ── 2. Lê o raw body ANTES do parse (boa prática para futuro HMAC) ───
+    const rawBody = await request.text();
+    let body: Record<string, unknown>;
+    try {
+      body = JSON.parse(rawBody);
+    } catch {
+      console.error("Webhook body inválido (não é JSON)");
+      return NextResponse.json({ received: true });
+    }
+
+    // ── 3. Validação básica do evento ────────────────────────────────────
     const event = body?.event as string;
-    const data = body?.data;
+    const data = body?.data as Record<string, unknown> | undefined;
 
     if (event !== "billing.paid" || !data) {
       return NextResponse.json({ received: true });
     }
 
-    const billingId: string = data?.billing?.id ?? data?.id;
+    const billingData = data?.billing as Record<string, unknown> | undefined;
+    const billingId: string =
+      (billingData?.id as string) ?? (data?.id as string) ?? "";
 
     if (!billingId) {
       console.error("Webhook billing.paid sem billing ID:", body);
@@ -32,7 +77,7 @@ export async function POST(request: Request) {
 
     const supabase = createServiceClient();
 
-    // Busca o payment pelo billing ID
+    // ── 4. Busca o payment pelo billing ID ──────────────────────────────
     const { data: payment } = await supabase
       .from("payments")
       .select("id, dream_id, status")
@@ -44,18 +89,18 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
-    // Idempotência: ignora se já foi processado
+    // ── 5. Idempotência: ignora se já foi processado ─────────────────────
     if (payment.status === "completed") {
       return NextResponse.json({ received: true });
     }
 
-    // Atualiza payment
+    // ── 6. Atualiza payment ──────────────────────────────────────────────
     await supabase
       .from("payments")
       .update({ status: "completed", completed_at: new Date().toISOString() })
       .eq("id", payment.id);
 
-    // Busca o sonho
+    // ── 7. Busca o sonho ─────────────────────────────────────────────────
     const { data: dream } = await supabase
       .from("dreams")
       .select("id, description, free_analysis")
@@ -67,13 +112,13 @@ export async function POST(request: Request) {
       return NextResponse.json({ received: true });
     }
 
-    // Marca is_paid=true imediatamente (PollingFallback vai aguardar paid_analysis)
+    // ── 8. Marca is_paid=true imediatamente ─────────────────────────────
     await supabase
       .from("dreams")
       .update({ is_paid: true, status: "paid_analyzed" })
       .eq("id", dream.id);
 
-    // Gera análise em background (continuando a partir da free)
+    // ── 9. Gera análise em background ────────────────────────────────────
     waitUntil(
       generateDreamAnalysis(dream.description, "paid", dream.free_analysis ?? undefined)
         .then((paidAnalysis) =>
@@ -88,7 +133,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ received: true });
   } catch (err) {
     console.error("Webhook error:", err);
-    // Retorna 200 para evitar reenvios desnecessários
     return NextResponse.json({ received: true }, { status: 200 });
   }
 }

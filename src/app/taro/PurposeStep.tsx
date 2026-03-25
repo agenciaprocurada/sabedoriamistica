@@ -12,14 +12,13 @@ const PURPOSES: { key: Purpose; label: string; icon: string; desc: string }[] = 
 ];
 
 interface Props {
-  onStart: (name: string, purpose: Purpose) => void;
+  onStart: (purpose: Purpose) => void;
 }
 
 export function PurposeStep({ onStart }: Props) {
-  const [name, setName] = useState("");
   const [purpose, setPurpose] = useState<Purpose | null>(null);
 
-  const canStart = name.trim().length >= 2 && purpose !== null;
+  const canStart = purpose !== null;
 
   return (
     <div className="space-y-8">
@@ -39,28 +38,12 @@ export function PurposeStep({ onStart }: Props) {
         </p>
       </motion.div>
 
-      {/* Nome */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-      >
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Seu nome..."
-          maxLength={40}
-          className="w-full bg-mystic-elevated border border-gold-subtle rounded-xl px-5 py-3.5 font-body text-text-primary placeholder:text-text-muted text-center text-lg focus:outline-none focus:border-gold transition-colors"
-        />
-      </motion.div>
-
       {/* Propósito */}
       <motion.div
         className="space-y-3"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.35 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
       >
         <p className="font-display text-center text-xl text-text-primary">
           Qual o propósito da sua consulta?
@@ -74,7 +57,7 @@ export function PurposeStep({ onStart }: Props) {
                 onClick={() => setPurpose(key)}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4 + i * 0.08 }}
+                transition={{ delay: 0.3 + i * 0.08 }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={`
@@ -100,11 +83,11 @@ export function PurposeStep({ onStart }: Props) {
 
       {/* Botão */}
       <motion.button
-        onClick={() => canStart && onStart(name.trim(), purpose!)}
+        onClick={() => canStart && onStart(purpose!)}
         disabled={!canStart}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.7 }}
+        transition={{ delay: 0.6 }}
         whileHover={canStart ? { scale: 1.02 } : {}}
         whileTap={canStart ? { scale: 0.98 } : {}}
         className="w-full bg-gold hover:bg-gold-light disabled:opacity-40 disabled:cursor-not-allowed text-mystic-bg font-body font-semibold text-lg py-4 rounded-full shadow-gold transition-all duration-200"

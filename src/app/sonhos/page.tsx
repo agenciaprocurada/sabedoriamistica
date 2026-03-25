@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Badge, Card } from "@/components/ui";
 import { HeroForm } from "./HeroForm";
+import { TestimonialsCarousel } from "./TestimonialsCarousel";
+import { CtaButton } from "./CtaButton";
 
 const PAGE_URL = "https://sabedoriamistica.com.br/sonhos";
 const OG_DESCRIPTION =
@@ -49,31 +51,6 @@ const steps = [
   },
 ];
 
-const testimonials = [
-  {
-    name: "Mariana S.",
-    location: "São Paulo, SP",
-    text: "Sonhei repetidamente com água turva por semanas. A interpretação me ajudou a entender que estava evitando uma conversa difícil no trabalho. Depois da análise, tive coragem de agir.",
-  },
-  {
-    name: "Ricardo O.",
-    location: "Belo Horizonte, MG",
-    text: "Fiquei impressionado com a profundidade da análise. Meu sonho sobre voar estava ligado a uma decisão que eu precisava tomar. A interpretação foi cirúrgica e muito precisa.",
-  },
-  {
-    name: "Fernanda L.",
-    location: "Curitiba, PR",
-    text: "Uso toda semana. Os sonhos têm me guiado em momentos de dúvida. Sinto que finalmente entendo a linguagem que minha alma usa para falar comigo enquanto durmo.",
-  },
-];
-
-function Stars() {
-  return (
-    <span className="text-gold text-base leading-none" aria-label="5 estrelas">
-      ★★★★★
-    </span>
-  );
-}
 
 function MoonIcon() {
   return (
@@ -196,24 +173,7 @@ export default function SonhosPage() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {testimonials.map((t, i) => (
-            <Card key={i} className="flex flex-col gap-4">
-              <Stars />
-
-              <p className="font-accent italic text-text-secondary text-base leading-relaxed flex-1">
-                &ldquo;{t.text}&rdquo;
-              </p>
-
-              <div className="border-t border-gold-subtle pt-4">
-                <p className="font-body text-text-primary text-sm font-medium">
-                  {t.name}
-                </p>
-                <p className="font-body text-text-muted text-xs">{t.location}</p>
-              </div>
-            </Card>
-          ))}
-        </div>
+        <TestimonialsCarousel />
       </section>
 
       {/* ── CTA Final ── */}
@@ -224,12 +184,7 @@ export default function SonhosPage() {
           Seu sonho tem uma mensagem esperando por você
         </h2>
 
-        <a
-          href="#top"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-gold hover:bg-gold-light text-mystic-bg font-body font-semibold text-lg px-10 py-4 shadow-gold hover:shadow-gold-lg transition-all duration-200"
-        >
-          Interpretar Meu Sonho Agora
-        </a>
+        <CtaButton />
 
         <p className="font-body text-text-muted text-sm">
           100% gratuito &nbsp;•&nbsp; Resultado instantâneo &nbsp;•&nbsp; Interpretação personalizada

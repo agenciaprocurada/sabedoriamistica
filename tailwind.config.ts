@@ -43,9 +43,14 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(6px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        pulsSubtle: {
+          "0%, 100%": { boxShadow: "0 0 20px rgba(212,168,67,0.20)" },
+          "50%": { boxShadow: "0 0 32px rgba(212,168,67,0.45)" },
+        },
       },
       animation: {
         fadeIn: "fadeIn 0.5s ease-out both",
+        "pulse-subtle": "pulsSubtle 2.5s ease-in-out infinite",
       },
     },
   },

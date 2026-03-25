@@ -21,7 +21,6 @@ const PURPOSE_LABEL: Record<Purpose, string> = {
 const SESSION_KEY = "pendingTaro";
 
 interface SavedState {
-  userName: string;
   purpose: Purpose;
   past: TaroCard;
   present: TaroCard;
@@ -34,6 +33,18 @@ interface SelectedCards {
   future: TaroCard | null;
 }
 
+async function fetchUserName(): Promise<string> {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return "";
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("name")
+    .eq("id", user.id)
+    .single();
+  return profile?.name?.split(" ")[0] ?? user.email?.split("@")[0] ?? "";
+}
+
 export function TaroGame() {
   const [stage, setStage] = useState<Stage>("purpose");
   const [userName, setUserName] = useState("");
@@ -42,17 +53,23 @@ export function TaroGame() {
   const [cards, setCards] = useState<SelectedCards>({ past: null, present: null, future: null });
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  // On mount: check sessionStorage for state restored after Google OAuth
+  // Busca nome do usuário logado ao montar
+  useEffect(() => {
+    fetchUserName().then((name) => { if (name) setUserName(name); });
+  }, []);
+
+  // Restaura estado após Google OAuth
   useEffect(() => {
     const saved = sessionStorage.getItem(SESSION_KEY);
     if (!saved) return;
 
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    supabase.auth.getUser().then(async ({ data: { user } }) => {
       if (user) {
         try {
           const data: SavedState = JSON.parse(saved);
-          setUserName(data.userName);
+          const name = await fetchUserName();
+          setUserName(name);
           setPurpose(data.purpose);
           setCards({ past: data.past, present: data.present, future: data.future });
           setStage("result");
@@ -64,8 +81,7 @@ export function TaroGame() {
     });
   }, []);
 
-  function handleStart(name: string, p: Purpose) {
-    setUserName(name);
+  function handleStart(p: Purpose) {
     setPurpose(p);
     setDeck(shuffleDeck());
     setStage("table");
@@ -81,9 +97,7 @@ export function TaroGame() {
       if (user) {
         setStage("result");
       } else {
-        // Save state before login
         const saved: SavedState = {
-          userName,
           purpose: purpose!,
           past: selected.past!,
           present: selected.present!,
@@ -93,11 +107,13 @@ export function TaroGame() {
         setStage("auth");
       }
     },
-    [userName, purpose]
+    [purpose]
   );
 
-  function handleLoginSuccess() {
+  async function handleLoginSuccess() {
     setShowLoginModal(false);
+    const name = await fetchUserName();
+    if (name) setUserName(name);
     setStage("result");
     sessionStorage.removeItem(SESSION_KEY);
   }
@@ -176,7 +192,7 @@ export function TaroGame() {
                   <div className="text-center space-y-3 max-w-sm">
                     <p className="text-3xl">🔮</p>
                     <h3 className="font-display text-xl font-bold text-gold">
-                      Sua leitura está pronta, {userName}
+                      Sua leitura está pronta!
                     </h3>
                     <p className="font-body text-sm text-text-secondary">
                       Para que as cartas completem sua mensagem, entre com sua conta gratuita.
