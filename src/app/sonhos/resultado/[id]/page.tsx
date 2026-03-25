@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui";
 import { DreamCollapse } from "./DreamCollapse";
 import { AnalysisMarkdown } from "./AnalysisMarkdown";
 import { CheckoutBox } from "./CheckoutBox";
+import { StickyCheckout } from "./StickyCheckout";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -23,9 +24,9 @@ const LOREM_ESPIRITUALIDADE = `Do ponto de vista espiritual, seu sonho carrega u
 
 const LOREM_PSICOLOGIA = `Pela perspectiva da psicologia profunda, os elementos centrais do seu sonho refletem um conflito interno não resolvido que pede integração. O arquétipo presente nesta experiência onírica sugere que há uma parte de você que ainda não foi plenamente reconhecida ou aceita. Carl Jung chamava esses fragmentos de "sombra" — aspectos da personalidade que relegamos ao inconsciente, mas que insistem em emergir. O que apareceu no seu sonho é um convite genuíno para olhar para dentro com honestidade e compaixão. Ignorar esse chamado pode perpetuar padrões que você mesmo deseja transformar.`;
 
-const LOREM_SAUDE = `Seu sonho também transmite mensagens sobre o estado do seu corpo e sua energia vital. Quando o inconsciente produz imagens como as que apareceram, frequentemente está sinalizando áreas de tensão acumulada que não receberam atenção suficiente. Pode haver um esgotamento físico ou emocional que você está minimizando no cotidiano. A medicina integrativa reconhece a conexão profunda entre os padrões oníricos e a saúde do corpo: o sonho é, muitas vezes, o primeiro sinal de que algo precisa de cuidado. Prestar atenção a esse chamado agora pode prevenir desequilíbrios maiores no futuro.`;
+const LOREM_SAUDE = `Seu sonho também transmite mensagens sobre o estado do seu corpo e sua energia vital. Quando o inconsciente produz imagens como as que apareceram, frequentemente está sinalizando áreas de tensão acumulada que não receberam atenção suficiente. Pode haver um esgotamento físico ou emocional que você está minimizando no cotidiano. A medicina integrativa reconhece a conexão profunda entre os padrões oníricos e a saúde do corpo: o sonho é, muitas vezes, o primeiro sinal de que algo precisa de cuidado.`;
 
-const LOREM_UNIVERSO = `A mensagem final que o Universo quer te entregar através deste sonho é uma de esperança e direcionamento. Você não está sozinho nessa jornada — há uma inteligência maior operando nos bastidores da sua vida, orquestrando encontros, oportunidades e desafios que servem ao seu crescimento. Este sonho específico chegou justamente agora porque você está pronto para o próximo passo, mesmo que ainda não saiba qual é. Confie no processo. Confie nos sinais. E confie que o que emerge das profundezas da sua consciência durante o sono é uma das formas mais puras de orientação disponíveis ao ser humano.`;
+const LOREM_UNIVERSO = `A mensagem final que o Universo quer te entregar através deste sonho é uma de esperança e direcionamento. Você não está sozinho nessa jornada — há uma inteligência maior operando nos bastidores da sua vida, orquestrando encontros, oportunidades e desafios que servem ao seu crescimento. Este sonho específico chegou justamente agora porque você está pronto para o próximo passo, mesmo que ainda não saiba qual é. Confie no processo. Confie nos sinais.`;
 
 export default async function ResultadoPage({ params }: Props) {
   const supabase = createClient();
@@ -78,12 +79,13 @@ export default async function ResultadoPage({ params }: Props) {
         <DreamCollapse text={dream.description} />
       </div>
 
-      {/* ── Card principal: análise + seções bloqueadas ── */}
-      <div className="bg-mystic-elevated rounded-2xl border border-gold-subtle overflow-hidden">
+      {/* ── Card principal: análise + seções bloqueadas ──
+           SEM overflow-hidden para não bloquear o position:fixed do StickyCheckout */}
+      <div className="bg-mystic-elevated rounded-2xl border border-gold-subtle">
 
-        {/* Cabeçalho da seção */}
-        <div className="flex items-center gap-2 px-6 pt-5 pb-4 border-b border-gold-subtle">
-          <span className="text-gold text-base">✦</span>
+        {/* Cabeçalho */}
+        <div className="flex items-center gap-2 px-6 pt-5 pb-4 border-b border-gold-subtle rounded-t-2xl">
+          <span className="text-gold">✦</span>
           <p className="font-body text-xs uppercase tracking-[0.15em] text-text-muted font-semibold">
             Análise Completa
           </p>
@@ -100,30 +102,29 @@ export default async function ResultadoPage({ params }: Props) {
           )}
         </div>
 
-        {/* ── Seções pagas + checkout sticky ── */}
-        <div className="relative">
+        {/* Seção 1 bloqueada — desfocada, ACIMA do checkout box */}
+        <div
+          aria-hidden="true"
+          className="px-6 pb-6 select-none pointer-events-none"
+          style={{ filter: "blur(4px)", opacity: 0.38 }}
+        >
+          <h3 className="font-display text-xl font-semibold text-gold mb-3">
+            O que a espiritualidade quer te dizer
+          </h3>
+          <p className="font-body text-text-secondary text-sm leading-relaxed">
+            {LOREM_ESPIRITUALIDADE}
+          </p>
+        </div>
 
-          {/* Seção 1 bloqueada — desfocada */}
-          <div
-            aria-hidden="true"
-            className="px-6 pb-5 select-none pointer-events-none"
-            style={{ filter: "blur(4px)", opacity: 0.35 }}
-          >
-            <h3 className="font-display text-xl font-semibold text-gold mb-3">
-              O que a espiritualidade quer te dizer
-            </h3>
-            <p className="font-body text-text-secondary text-sm leading-relaxed">
-              {LOREM_ESPIRITUALIDADE}
-            </p>
-          </div>
-
-          {/* ── CHECKOUT BOX STICKY ── */}
-          <div className="sticky top-20 z-20 px-4 pb-4">
+        {/* ── CHECKOUT BOX — fica fixo assim que entra na tela ── */}
+        <StickyCheckout>
+          <div className="px-4 py-3">
             <div
               className="rounded-2xl border border-gold p-6 flex flex-col items-center gap-4"
               style={{
                 background: "linear-gradient(135deg, #0f1226 0%, #0B0D1A 100%)",
-                boxShadow: "0 0 40px rgba(212,168,67,0.18), 0 8px 40px rgba(0,0,0,0.6)",
+                boxShadow:
+                  "0 0 40px rgba(212,168,67,0.2), 0 8px 40px rgba(0,0,0,0.7)",
               }}
             >
               <div className="text-center space-y-1">
@@ -142,41 +143,42 @@ export default async function ResultadoPage({ params }: Props) {
               </p>
             </div>
           </div>
+        </StickyCheckout>
 
-          {/* Seções 2, 3 e 4 bloqueadas — desfocadas */}
-          <div
-            aria-hidden="true"
-            className="px-6 pt-2 pb-8 select-none pointer-events-none space-y-7"
-            style={{ filter: "blur(4px)", opacity: 0.35 }}
-          >
-            <div>
-              <h3 className="font-display text-xl font-semibold text-gold mb-3">
-                Seu sonho segundo a Psicologia
-              </h3>
-              <p className="font-body text-text-secondary text-sm leading-relaxed">
-                {LOREM_PSICOLOGIA}
-              </p>
-            </div>
+        {/* Seções 2, 3 e 4 bloqueadas — rolam POR BAIXO do checkout fixo */}
+        <div
+          aria-hidden="true"
+          className="px-6 pt-4 pb-10 select-none pointer-events-none space-y-8"
+          style={{ filter: "blur(4px)", opacity: 0.38 }}
+        >
+          <div>
+            <h3 className="font-display text-xl font-semibold text-gold mb-3">
+              Seu sonho segundo a Psicologia
+            </h3>
+            <p className="font-body text-text-secondary text-sm leading-relaxed">
+              {LOREM_PSICOLOGIA}
+            </p>
+          </div>
 
-            <div>
-              <h3 className="font-display text-xl font-semibold text-gold mb-3">
-                Sobre a sua saúde
-              </h3>
-              <p className="font-body text-text-secondary text-sm leading-relaxed">
-                {LOREM_SAUDE}
-              </p>
-            </div>
+          <div>
+            <h3 className="font-display text-xl font-semibold text-gold mb-3">
+              Sobre a sua saúde
+            </h3>
+            <p className="font-body text-text-secondary text-sm leading-relaxed">
+              {LOREM_SAUDE}
+            </p>
+          </div>
 
-            <div>
-              <h3 className="font-display text-xl font-semibold text-gold mb-3">
-                Mensagem do Universo para você
-              </h3>
-              <p className="font-body text-text-secondary text-sm leading-relaxed">
-                {LOREM_UNIVERSO}
-              </p>
-            </div>
+          <div>
+            <h3 className="font-display text-xl font-semibold text-gold mb-3">
+              Mensagem do Universo para você
+            </h3>
+            <p className="font-body text-text-secondary text-sm leading-relaxed">
+              {LOREM_UNIVERSO}
+            </p>
           </div>
         </div>
+
       </div>
 
       {/* ── Separador ── */}
