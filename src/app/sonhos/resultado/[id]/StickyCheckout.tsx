@@ -2,21 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const NAVBAR_HEIGHT = 72; // altura aprox. da navbar
-
 export function StickyCheckout({ children }: { children: React.ReactNode }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [fixed, setFixed] = useState(false);
-  const [snapshot, setSnapshot] = useState({
-    naturalTop: 0, // scrollY no momento em que fixamos
-    left: 0,
-    width: 0,
-    height: 0,
-  });
+  const [wrapperHeight, setWrapperHeight] = useState<number | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     let isFixed = false;
-    let snap = { naturalTop: 0, left: 0, width: 0, height: 0 };
+    let docNaturalTop = 0;
 
     const onScroll = () => {
       const el = wrapperRef.current;
@@ -24,32 +19,28 @@ export function StickyCheckout({ children }: { children: React.ReactNode }) {
 
       if (!isFixed) {
         const rect = el.getBoundingClientRect();
-        // Quando o topo do elemento chega na navbar → fixa
-        if (rect.top <= NAVBAR_HEIGHT) {
-          snap = {
-            naturalTop: rect.top + window.scrollY, // posição absoluta no doc
-            left: rect.left,
-            width: rect.width,
-            height: rect.height,
-          };
+        // Fixa assim que qualquer parte do box entra na viewport (pelo rodapé)
+        if (rect.top < window.innerHeight) {
+          docNaturalTop = rect.top + window.scrollY;
           isFixed = true;
+          setWrapperHeight(rect.height);
           setFixed(true);
-          setSnapshot(snap);
         }
       } else {
-        // Se o usuário rolar para cima além da posição original → libera
-        const naturalTopRelative = snap.naturalTop - window.scrollY;
-        if (naturalTopRelative > NAVBAR_HEIGHT) {
+        // Libera se o usuário rolar para cima e o box saísse da viewport
+        const naturalTopRelative = docNaturalTop - window.scrollY;
+        if (naturalTopRelative >= window.innerHeight) {
           isFixed = false;
           setFixed(false);
+          setWrapperHeight(undefined);
         }
       }
     };
 
     const onResize = () => {
-      // Ao redimensionar, reseta o estado para re-calcular
       isFixed = false;
       setFixed(false);
+      setWrapperHeight(undefined);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -61,19 +52,16 @@ export function StickyCheckout({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    /* O wrapper mantém o espaço no fluxo quando o filho está fixo */
-    <div
-      ref={wrapperRef}
-      style={{ height: fixed ? snapshot.height : undefined }}
-    >
+    <div ref={wrapperRef} style={{ height: fixed ? wrapperHeight : undefined }}>
       <div
         style={
           fixed
             ? {
                 position: "fixed",
-                top: NAVBAR_HEIGHT,
-                left: snapshot.left,
-                width: snapshot.width,
+                bottom: 16,
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: wrapperRef.current?.offsetWidth ?? "auto",
                 zIndex: 50,
               }
             : undefined
