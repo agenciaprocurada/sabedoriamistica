@@ -11,7 +11,7 @@ export function StickyCheckout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let isFixed = false;
-    let docNaturalTop = 0;
+    let docNaturalCenter = 0; // posição absoluta do centro do box no documento
 
     const onScroll = () => {
       const el = wrapperRef.current;
@@ -19,17 +19,20 @@ export function StickyCheckout({ children }: { children: React.ReactNode }) {
 
       if (!isFixed) {
         const rect = el.getBoundingClientRect();
-        // Fixa quando o topo do box começa a sair pela parte superior da tela
-        if (rect.top <= 0) {
-          docNaturalTop = rect.top + window.scrollY;
+        const boxCenter = rect.top + rect.height / 2;
+        const viewportCenter = window.innerHeight / 2;
+
+        // Fixa quando o centro do box chega ao centro da viewport
+        if (boxCenter <= viewportCenter) {
+          docNaturalCenter = rect.top + rect.height / 2 + window.scrollY;
           isFixed = true;
           setWrapperHeight(rect.height);
           setFixed(true);
         }
       } else {
-        // Libera se o usuário rolar de volta e o box estiver visível novamente
-        const naturalTopRelative = docNaturalTop - window.scrollY;
-        if (naturalTopRelative > 0) {
+        // Libera se o usuário rolar para cima e o centro natural voltar acima do centro da viewport
+        const naturalCenterRelative = docNaturalCenter - window.scrollY;
+        if (naturalCenterRelative > window.innerHeight / 2) {
           isFixed = false;
           setFixed(false);
           setWrapperHeight(undefined);
@@ -58,9 +61,9 @@ export function StickyCheckout({ children }: { children: React.ReactNode }) {
           fixed
             ? {
                 position: "fixed",
-                bottom: 16,
+                top: "50%",
                 left: "50%",
-                transform: "translateX(-50%)",
+                transform: "translate(-50%, -50%)",
                 width: wrapperRef.current?.offsetWidth ?? "auto",
                 zIndex: 50,
               }
