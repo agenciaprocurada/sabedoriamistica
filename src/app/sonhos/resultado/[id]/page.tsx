@@ -102,21 +102,7 @@ export default async function ResultadoPage({ params }: Props) {
           )}
         </div>
 
-        {/* Seção 1 bloqueada — desfocada, ACIMA do checkout box */}
-        <div
-          aria-hidden="true"
-          className="px-6 pb-6 select-none pointer-events-none"
-          style={{ filter: "blur(4px)", opacity: 0.38 }}
-        >
-          <h3 className="font-display text-xl font-semibold text-gold mb-3">
-            O que a espiritualidade quer te dizer
-          </h3>
-          <p className="font-body text-text-secondary text-sm leading-relaxed">
-            {LOREM_ESPIRITUALIDADE}
-          </p>
-        </div>
-
-        {/* ── CHECKOUT BOX — fica fixo assim que entra na tela ── */}
+        {/* ── CHECKOUT BOX — aparece logo após análise gratuita, fica fixo ao rolar ── */}
         <StickyCheckout>
           <div className="px-4 py-3">
             <div
@@ -145,12 +131,21 @@ export default async function ResultadoPage({ params }: Props) {
           </div>
         </StickyCheckout>
 
-        {/* Seções 2, 3 e 4 bloqueadas — rolam POR BAIXO do checkout fixo */}
+        {/* Seções bloqueadas — rolam POR BAIXO do checkout fixo */}
         <div
           aria-hidden="true"
           className="px-6 pt-4 pb-10 select-none pointer-events-none space-y-8"
           style={{ filter: "blur(4px)", opacity: 0.38 }}
         >
+          <div>
+            <h3 className="font-display text-xl font-semibold text-gold mb-3">
+              O que a espiritualidade quer te dizer
+            </h3>
+            <p className="font-body text-text-secondary text-sm leading-relaxed">
+              {LOREM_ESPIRITUALIDADE}
+            </p>
+          </div>
+
           <div>
             <h3 className="font-display text-xl font-semibold text-gold mb-3">
               Seu sonho segundo a Psicologia
