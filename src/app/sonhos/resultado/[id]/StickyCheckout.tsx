@@ -19,17 +19,17 @@ export function StickyCheckout({ children }: { children: React.ReactNode }) {
 
       if (!isFixed) {
         const rect = el.getBoundingClientRect();
-        // Fixa assim que qualquer parte do box entra na viewport (pelo rodapé)
-        if (rect.top < window.innerHeight) {
+        // Fixa quando o topo do box começa a sair pela parte superior da tela
+        if (rect.top <= 0) {
           docNaturalTop = rect.top + window.scrollY;
           isFixed = true;
           setWrapperHeight(rect.height);
           setFixed(true);
         }
       } else {
-        // Libera se o usuário rolar para cima e o box saísse da viewport
+        // Libera se o usuário rolar de volta e o box estiver visível novamente
         const naturalTopRelative = docNaturalTop - window.scrollY;
-        if (naturalTopRelative >= window.innerHeight) {
+        if (naturalTopRelative > 0) {
           isFixed = false;
           setFixed(false);
           setWrapperHeight(undefined);
