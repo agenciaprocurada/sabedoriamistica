@@ -102,8 +102,8 @@ export default async function ResultadoPage({ params }: Props) {
           )}
         </div>
 
-        {/* ── CHECKOUT BOX — aparece logo após análise gratuita, fica fixo ao rolar ── */}
-        <StickyCheckout>
+        {/* ── CHECKOUT BOX — aparece logo após análise gratuita, popup ao rolar além ── */}
+        <StickyCheckout dreamId={params.id}>
           <div className="px-4 py-3">
             <div
               className="rounded-2xl border border-gold p-6 flex flex-col items-center gap-4"
