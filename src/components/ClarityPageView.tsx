@@ -6,14 +6,12 @@
  * Rastreia mudanças de rota no Next.js App Router e notifica o Microsoft Clarity
  * para que cada página seja registrada corretamente nos relatórios.
  *
- * Como o App Router não expõe um evento de "route change" simples via hook,
- * usamos o pathname do next/navigation para detectar mudanças de URL.
+ * Usa polling para aguardar o Clarity estar disponível.
  */
 
 import { useEffect } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
-// Tipagem global para o clarity
 declare global {
   interface Window {
     clarity?: (command: string, ...args: unknown[]) => void;
@@ -25,15 +23,27 @@ export function ClarityPageView() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (typeof window === "undefined" || typeof window.clarity !== "function") return;
-
-    // Monta a URL completa com query string
     const search = searchParams.toString();
     const fullUrl = search ? `${pathname}?${search}` : pathname;
+    const title = document.title;
 
-    // Identifica a página virtual no Clarity
-    window.clarity("set", "pageTitle", document.title);
-    window.clarity("set", "virtualUrl", fullUrl);
+    let attempts = 0;
+    const MAX_ATTEMPTS = 30; // até 3 segundos (30 × 100ms)
+
+    const tryTrack = () => {
+      if (typeof window.clarity === "function") {
+        window.clarity("set", "pageTitle", title);
+        window.clarity("set", "virtualUrl", fullUrl);
+        return;
+      }
+
+      if (attempts < MAX_ATTEMPTS) {
+        attempts++;
+        setTimeout(tryTrack, 100);
+      }
+    };
+
+    tryTrack();
   }, [pathname, searchParams]);
 
   return null;

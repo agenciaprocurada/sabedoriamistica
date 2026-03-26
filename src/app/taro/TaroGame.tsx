@@ -68,12 +68,22 @@ export function TaroGame() {
   const [cards, setCards] = useState<SelectedCards>({ past: null, present: null, future: null });
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  // Rastreia mudanças de estágio como páginas virtuais no Clarity
+  // Rastreia mudanças de estágio como páginas virtuais no Clarity (com polling)
   useEffect(() => {
-    if (typeof window !== "undefined" && typeof window.clarity === "function") {
-      window.clarity("set", "virtualUrl", STAGE_PAGE[stage]);
-      window.clarity("set", "pageTitle", `Tarô — ${stage}`);
-    }
+    const virtualUrl = STAGE_PAGE[stage];
+    const title = `Tarô — ${stage}`;
+    let attempts = 0;
+
+    const tryTrack = () => {
+      if (typeof window.clarity === "function") {
+        window.clarity("set", "virtualUrl", virtualUrl);
+        window.clarity("set", "pageTitle", title);
+        return;
+      }
+      if (attempts < 30) { attempts++; setTimeout(tryTrack, 100); }
+    };
+
+    tryTrack();
   }, [stage]);
 
   // Busca nome do usuário logado ao montar

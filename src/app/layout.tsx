@@ -59,13 +59,19 @@ export default async function RootLayout({
       className={`${playfair.variable} ${inter.variable} ${cormorant.variable}`}
     >
       <body className="min-h-screen flex flex-col text-text-primary">
-        <Script id="clarity-init" strategy="afterInteractive">{`
-          (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-          })(window, document, "clarity", "script", "vyyikebv84");
-        `}</Script>
+      {/* Pixel do Clarity — inline no head para garantir execução síncrona
+           ANTES da hidratação do React, evitando race condition */}
+      <head>
+        <script
+          dangerouslySetInnerHTML={{ __html: `
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "vyyikebv84");
+          `}}
+        />
+      </head>
         <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18030402125" strategy="afterInteractive" />
         <Script id="gtag-init" strategy="afterInteractive">{`
           window.dataLayer = window.dataLayer || [];
