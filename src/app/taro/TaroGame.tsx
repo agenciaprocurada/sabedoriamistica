@@ -9,6 +9,13 @@ import { CardTable } from "./CardTable";
 import { ReadingResult } from "./ReadingResult";
 import { LoginModal } from "@/components/LoginModal";
 
+// Tipagem global para o clarity
+declare global {
+  interface Window {
+    clarity?: (command: string, ...args: unknown[]) => void;
+  }
+}
+
 type Stage = "purpose" | "table" | "auth" | "result";
 
 const PURPOSE_LABEL: Record<Purpose, string> = {
@@ -45,6 +52,14 @@ async function fetchUserName(): Promise<string> {
   return profile?.name?.split(" ")[0] ?? user.email?.split("@")[0] ?? "";
 }
 
+// Mapa de estágio para título de página virtual no Clarity
+const STAGE_PAGE: Record<Stage, string> = {
+  purpose: "/taro/escolha-proposito",
+  table:   "/taro/escolha-cartas",
+  auth:    "/taro/login-necessario",
+  result:  "/taro/resultado",
+};
+
 export function TaroGame() {
   const [stage, setStage] = useState<Stage>("purpose");
   const [userName, setUserName] = useState("");
@@ -52,6 +67,14 @@ export function TaroGame() {
   const [deck, setDeck] = useState<TaroCard[]>(() => shuffleDeck());
   const [cards, setCards] = useState<SelectedCards>({ past: null, present: null, future: null });
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  // Rastreia mudanças de estágio como páginas virtuais no Clarity
+  useEffect(() => {
+    if (typeof window !== "undefined" && typeof window.clarity === "function") {
+      window.clarity("set", "virtualUrl", STAGE_PAGE[stage]);
+      window.clarity("set", "pageTitle", `Tarô — ${stage}`);
+    }
+  }, [stage]);
 
   // Busca nome do usuário logado ao montar
   useEffect(() => {

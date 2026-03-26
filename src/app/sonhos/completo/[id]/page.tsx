@@ -8,6 +8,7 @@ import { PaymentPolling } from "./PaymentPolling";
 import { PollingFallback } from "./PollingFallback";
 import { SessionToast } from "./SessionToast";
 import { ShareButtons } from "./ShareButtons";
+import { ClarityEvent } from "@/components/ClarityEvent";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -59,6 +60,8 @@ export default async function CompletoPage({ params, searchParams }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto py-8 space-y-8">
+      {/* Rastreamento Clarity — resultado completo (pago) */}
+      <ClarityEvent name="sonhos_completo" virtualUrl="/sonhos/completo" />
 
       {/* Toast para acesso recém-liberado */}
       {searchParams.session_id && <SessionToast />}

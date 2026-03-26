@@ -6,6 +6,7 @@ import { DreamCollapse } from "./DreamCollapse";
 import { AnalysisMarkdown } from "./AnalysisMarkdown";
 import { CheckoutBox } from "./CheckoutBox";
 import { StickyCheckout } from "./StickyCheckout";
+import { ClarityEvent } from "@/components/ClarityEvent";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -59,6 +60,8 @@ export default async function ResultadoPage({ params }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 space-y-6">
+      {/* Rastreamento Clarity — página de resultado de sonho */}
+      <ClarityEvent name="sonhos_resultado" virtualUrl="/sonhos/resultado" />
 
       {/* ── Header ── */}
       <div className="text-center space-y-2">

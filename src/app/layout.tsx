@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Playfair_Display, Inter, Cormorant_Garamond } from "next/font/google";
 import Script from "next/script";
 import { Header, Footer, StarryBackground, AppShell } from "@/components/layout";
+import { ClarityPageView } from "@/components/ClarityPageView";
 import { createClient } from "@/lib/supabase/server";
 import "./globals.css";
 
@@ -71,6 +73,10 @@ export default async function RootLayout({
           gtag('js', new Date());
           gtag('config', 'AW-18030402125');
         `}</Script>
+        {/* Rastreamento de páginas virtuais para o Microsoft Clarity */}
+        <Suspense fallback={null}>
+          <ClarityPageView />
+        </Suspense>
         <StarryBackground />
         <AppShell
           header={<Header user={headerUser} />}
